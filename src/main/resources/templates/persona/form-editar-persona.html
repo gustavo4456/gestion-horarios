@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar datos de Persona</title>
+</head>
+
+<body>
+    <a th:href="@{/persona/menu-persona}">menu</a>
+
+    <form th:action="@{/persona/editar}" th:object="${persona}" method="post">
+
+
+        <input type="number" id="id" th:field="*{id}" required hidden>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" th:field="*{nombre}" id="nombre">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;">
+
+        </span>
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" th:field="*{apellido}" id="apellido">
+        <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" style="color: red;">
+
+        </span>
+
+        <label for="edad">Edad:</label>
+        <input type="number" th:field="*{edad}" id="edad">
+        <span th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}" style="color: red;">
+
+        </span>
+
+        <label for="dni">Dni:</label>
+        <input type="text" th:field="*{dni}" id="dni">
+        <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" style="color: red;">
+
+        </span>
+
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+
+</html>

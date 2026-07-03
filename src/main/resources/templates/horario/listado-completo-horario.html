@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado Completo Horarios</title>
+</head>
+
+<body>
+
+    <h2>Filtrado de horarios</h2>
+    <a th:href="@{/home}">Menú General</a>
+    <a th:href="@{/horario/menu}">Menú</a>
+    <form th:action="@{/horario/filtro}" method="get">
+        <label for="filtro">Filtro:</label>
+
+        <select name="filtro" id="filtro">
+            <option value="1">Primer año</option>
+            <option value="2">Segundo año</option>
+            <option value="3">Tercer año</option>
+            <option value="4">Cuarto año</option>
+            <option value="5">Quinto año</option>
+        </select>
+
+        <input type="submit" value="Filtrar">
+    </form>
+
+    <h2>Listado Completo</h2>
+    <table border="1">
+
+        <head>
+            <tr>
+                <th>Id:</th>
+                <th>Materia</th>
+                <th>Tipo</th>
+                <th>Día</th>
+                <th>Horario</th>
+                <th>Opciones</th>
+            </tr>
+        </head>
+
+        <tbody th:each="h : ${horarios}">
+            <td th:text="${h.id}">ID</td>
+            <td th:text="${h.materia.nombre}">Nombre Materia</td>
+            <td th:text="${h.tipoMateria}">Tipo de materia</td>
+            <td th:text="${h.diasSemana}">Día</td>
+            <td th:text="${h.horaInicio} + ' - ' + ${h.horaFin} "></td>
+
+            <td>
+                <a th:href="@{/horario/{id}/editar(id=${h.id})}">Editar</a>
+                <a th:href="@{/horario/{id}/eliminar(id=${h.id})}">Eliminar</a>
+            </td>
+        </tbody>
+
+    </table>
+</body>
+
+</html>

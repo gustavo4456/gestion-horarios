@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado de la Busqueda</title>
+</head>
+
+<body>
+
+    <h2>Resultado de busqueda de materia</h2>
+
+    <a th:href="@{/materia/menu}">menu</a>
+    <a th:href="@{/materia/buscar}">volver a buscar</a>
+
+    <div th:object="${materia}">
+        <h3>Id: </h3>
+        <p th:text="*{id}">0</p>
+        <h3>Nombre: </h3>
+        <p th:text="*{nombre}">nombre</p>
+        <h3>Año de cursada: </h3>
+        <p th:text="*{anioCursada}">año de cursada</p>
+        <h3>Tipo de materia: </h3>
+        <p th:text="*{tipoMateria}">tipo de materia</p>
+
+        <a th:href="@{/materia/{id}/eliminar(id=*{id})}">Eliminar</a>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Listado de materias (' + ${listadoMaterias.size} + ')'">Listado de materias </title>
+</head>
+
+<body>
+
+    <h2>Listado de materias</h2>
+    <a th:href="@{/materia/menu}">menú materias</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Año de cursada</th>
+                <th>Tipo</th>
+                <th>Opcion</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <tr th:each="m : ${listadoMaterias}">
+                <td th:text="${m.id}">0</td>
+                <td th:text="${m.nombre}">Nombre</td>
+                <td th:text="${m.anioCursada}">Año de cursada</td>
+                <td th:text="${m.tipoMateria}">Tipo de materia</td>
+                <td>
+                    <a th:href="@{/materia/{id}/eliminar(id=${m.id})}">Eliminar</a>
+                    <a th:href="@{/materia/{id}/form-editar(id=${m.id})}">Editar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

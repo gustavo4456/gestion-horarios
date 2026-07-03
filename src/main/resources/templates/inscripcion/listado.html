@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Inscripciones</title>
+</head>
+
+<body>
+
+    <h2>Listado de Inscripciones</h2>
+
+    <a th:href="@{/inscripcion/menu}">Menú</a>
+    <a th:href="@{/home}">Menú General</a>
+
+    <table border="1">
+
+        <thead>
+            <th>ID</th>
+            <th>Persona</th>
+            <th>Año lectivo</th>
+            <th>Materias</th>
+            <th>Opciones</th>
+        </thead>
+
+        <tbody th:each="i : ${inscripciones}">
+            <td th:text="${i.id}">ID</td>
+            <td th:text="${i.persona.nombre}">Nombre</td>
+            <td th:text="${i.anioLectivo}">Año lectivo</td>
+            <td th:text="${i.materias.size}">Materias</td>
+            <td>
+                <a th:href="@{/inscripcion/{id}/editar(id=${i.id})}">Editar</a>
+                <a th:href="@{/inscripcion/{id}/eliminar(id=${i.id})}">Eliminar</a>
+            </td>
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

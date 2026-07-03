@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Materia</title>
+</head>
+
+<body>
+    <h2>Nueva Materia</h2>
+
+    <a th:href="@{/materia/menu}">Menu</a>
+
+
+    <form th:action="@{/materia/guardar}" th:object="${nuevaMateria}" method="post">
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" th:field="*{nombre}">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;">
+
+        </span>
+
+        <label for="anioCursada">Año Cursada:</label>
+        <input type="number" th:field="*{anioCursada}">
+        <span th:if="${#fields.hasErrors('anioCursada')}" th:errors="*{anioCursada}" style="color: red;">
+
+        </span>
+
+        <label for="tipoMateria">Tipos Materia:</label>
+        <select th:field="*{tipoMateria}">
+            <option th:each="t : ${tiposMaterias}" th:value="${t}" th:text="${t}">
+
+            </option>
+        </select>
+        <span th:if="${#fields.hasErrors('tipoMateria')}" th:errors="*{tipoMateria}" style="color: red;">
+
+        </span>
+
+        <button type="submit">Guardar</button>
+
+    </form>
+</body>
+
+</html>

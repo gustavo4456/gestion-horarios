@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado Horario</title>
+</head>
+
+<body>
+    <h2>Se guardaron los siguientes datos: </h2>
+    <a th:href="@{/home}">Menú General</a>
+    <a th:href="@{/horario/menu}">Menú</a>
+
+    <table border="1">
+
+        <head>
+            <tr>
+                <th>Materia</th>
+                <th>Tipo</th>
+                <th>Día</th>
+                <th>Horario</th>
+            </tr>
+        </head>
+
+        <tbody th:object="${horarioBD}">
+            <td th:text="*{materia.nombre}">Nombre Materia</td>
+            <td th:text="*{tipoMateria}">Tipo de materia</td>
+            <td th:text="*{diasSemana}">Día</td>
+            <td th:text="*{horaInicio} + ' - ' + *{horaFin} "></td>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

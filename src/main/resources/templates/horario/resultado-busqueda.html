@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado horario</title>
+</head>
+
+<body>
+
+    <h2>Resultado horario</h2>
+    <a th:href="@{/home}">Menú General</a>
+    <a th:href="@{/horario/menu}">Menú</a>
+
+    <div th:object="${horario}">
+
+        <h3>Materia:</h3>
+        <p th:text="*{materia.nombre}"></p>
+
+        <h3>Tipo:</h3>
+        <p th:text="*{tipoMateria}"></p>
+
+        <h3>Día:</h3>
+        <p th:text="*{diasSemana}"></p>
+
+        <h3>Hora:</h3>
+        <p th:text="*{horaInicio} + ' - ' + *{horaFin}"></p>
+
+        <a th:href="@{/horario/{id}/editar(id=*{id})}">Editar</a>
+        <a th:href="@{/horario/{id}/eliminar(id=*{id})}">Eliminar</a>
+    </div>
+
+</body>
+
+</html>

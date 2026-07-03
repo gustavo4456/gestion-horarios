@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear nuevo horario</title>
+</head>
+
+<body>
+
+    <h2>Crear horario</h2>
+    <a th:href="@{/horario/menu}">Menú</a>
+    <a th:href="@{/home}">Menú General</a>
+
+    <form th:action="@{/horario/guardar}" method="post" th:object="${horario}">
+
+        <label for="materia">Materia:</label>
+        <select th:field="*{materia}">
+            <option th:each="m : ${materias}" th:value="${m.id}" th:text="${m.nombre}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('materia')}" th:errors="*{materia}" style="color: red;">
+
+        </span>
+
+        <label for="diasSemana">Día:</label>
+        <select th:field="*{diasSemana}">
+            <option th:each="li : ${listaDias}" th:value="${li}" th:text="${li}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('diasSemana')}" th:errors="*{diasSemana}" style="color: red;"></span>
+
+        <label for="tipoMateria">Tipo Materia:</label>
+        <select th:field="*{tipoMateria}">
+            <option th:each="tm : ${listaTiposMateria}" th:value="${tm}" th:text="${tm}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('tipoMateria')}" th:errors="*{tipoMateria}" style="color: red;"></span>
+
+        <label for="horaInicio">Hora de inicio:</label>
+        <input type="time" th:field="*{horaInicio}">
+        <span th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}" style="color: red;"></span>
+
+        <label for="horaFin">Hora de fin:</label>
+        <input type="time" th:field="*{horaFin}">
+        <span th:if="${#fields.hasErrors('horaFin')}" th:errors="*{horaFin}" style="color: red;"></span>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+</body>
+
+</html>

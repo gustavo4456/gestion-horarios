@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado busqueda</title>
+</head>
+
+<body>
+
+    <h2>Resutlado:</h2>
+
+    <a th:href="@{/persona/menu-persona}">menu</a>
+    <a th:href="@{/persona/buscar}">volver a buscar</a>
+
+    <div th:object="${persona}">
+        <h3>Id: </h3>
+        <p th:text="*{id}">0</p>
+        <h3>Nombre: </h3>
+        <p th:text="*{nombre}">nombre</p>
+        <h3>Apellido: </h3>
+        <p th:text="*{apellido}">apellido</p>
+        <h3>Edad: </h3>
+        <p th:text="*{edad}">edad</p>
+        <h3>Dni: </h3>
+        <p th:text="*{dni}">edad</p>
+        <a th:href="@{/persona/{id}/eliminar(id=*{id})}">Eliminar</a>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.com">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado Filtro de horarios</title>
+</head>
+
+<body>
+
+    <h2 th:text="'Resultados para el año ' + ${anioCursada}">Resultado del filtrado por año de cursada</h2>
+    <a th:href="@{/home}">Menú General</a>
+    <a th:href="@{/horario/menu}">Menú</a>
+
+    <table border="1">
+
+        <head>
+            <tr>
+                <th>Materia</th>
+                <th>Tipo</th>
+                <th>Día</th>
+                <th>Horario</th>
+            </tr>
+        </head>
+
+        <tbody th:each="h : ${horarios}">
+            <td th:text="${h.materia.nombre}">Nombre Materia</td>
+            <td th:text="${h.tipoMateria}">Tipo de materia</td>
+            <td th:text="${h.diasSemana}">Día</td>
+            <td th:text="${h.horaInicio} + ' - ' + ${h.horaFin} "></td>
+            <td>
+                <a th:href="@{/horario/{id}/editar(id=${h.id})}">Editar</a>
+                <a th:href="@{/horario/{id}/eliminar(id=${h.id})}">Eliminar</a>
+            </td>
+        </tbody>
+
+    </table>
+</body>
+
+</html>

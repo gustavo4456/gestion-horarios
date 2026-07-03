@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar inscripción</title>
+</head>
+
+<body>
+    <h2>Filtrar Materias</h2>
+
+    <a th:href="@{/home}">Menú General</a>
+    <a th:href="@{/inscripcion/menu}">Menú</a>
+
+    <form th:action="@{/inscripcion/filtro-materia-editar}" method="get">
+
+        <input type="number" name="idFiltro" id="idFiltro" th:value="${inscripcion.id}" hidden>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre">
+
+
+        <label for="anioCursadaFiltro">Año lectivo:</label>
+        <input type="number" name="anioCursadaFiltro" id="anioCursadaFiltro">
+
+
+        <input type="submit" value="Buscar">
+    </form>
+
+    <h2>Editar Inscripción</h2>
+
+
+
+
+    <form th:action="@{/inscripcion/editar}" method="post" th:object="${inscripcion}">
+
+        <input type="number" th:field="*{id}" hidden>
+
+        <label for="persona">Persona:</label>
+        <select th:field="*{persona}">
+            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('persona')}" th:errors="*{persona}" style="color: red;"></span>
+
+        <label for="anioLectivo">Año Lectivo:</label>
+        <select th:field="*{anioLectivo}">
+            <option th:each="a : ${aniosLectivo}" th:value="${a}" th:text="${a}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('anioLectivo')}" th:errors="*{anioLectivo}" style="color: red;"></span>
+
+
+
+        <h3>Selección de Materias (Se reemplazará las materias en bd por la nueva selección):</h3>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Selección</th>
+                    <th>Nombre</th>
+                    <th>Año de cursada</th>
+                    <th>Tipo</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr th:each="m : ${listadoMaterias}">
+                    <td th:text="${m.id}">0</td>
+                    <td>
+                        <input type="checkbox" name="seleccion" id="seleccion" th:value="${m.id}"
+                            th:checked="${#lists.contains(inscripcion.materias.![id], m.id)}">
+                    </td>
+                    <td th:text="${m.nombre}">Nombre</td>
+                    <td th:text="${m.anioCursada}">Año de cursada</td>
+                    <td th:text="${m.tipoMateria}">Tipo de materia</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <input type="submit" value="Guardar">
+    </form>
+
+</body>
+
+</html>
