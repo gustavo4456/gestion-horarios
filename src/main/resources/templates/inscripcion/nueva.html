@@ -19,11 +19,11 @@
     <form th:action="@{/inscripcion/filtro-materia}" method="get">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre">
-        <span th:if="${faltanLLenarCampos}" style="color: red;">Debe llenar este campo.</span>
+
 
         <label for="anioCursadaFiltro">Año lectivo:</label>
         <input type="number" name="anioCursadaFiltro" id="anioCursadaFiltro">
-        <span th:if="${faltanLLenarCampos}" style="color: red;">Debe llenar este campo.</span>
+
 
         <input type="submit" value="Buscar">
     </form>

@@ -105,7 +105,8 @@ public class InscripcionController {
             return "inscripcion/nueva";
         }
 
-        model.addAttribute("faltanLLenarCampos", true);
+        List<Materia> materias = materiaService.getMaterias();
+        model.addAttribute("listadoMaterias", materias);
 
         carga(true, model);
 
