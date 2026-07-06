@@ -28,11 +28,6 @@ public class MateriaController {
         this.materiaService = materiaService;
     }
 
-    @GetMapping("/menu")
-    public String getMenu() {
-        return "/materia/menu";
-    }
-
     @GetMapping("/listado")
     public String getListadoMaterias(Model model) {
 

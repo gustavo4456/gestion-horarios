@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title th:text="'Listado de personas (' + ${cantidadPersonas} +')'">Listado de personas</title>
 </head>
 
 <body>
-    <h2>Listado de las personas en la BD</h2>
 
-    <a th:href="@{/persona/menu-persona}">menu</a>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <h2>Listado de las personas en la BD</h2>
     <table border="1">
         <thead>
             <tr>

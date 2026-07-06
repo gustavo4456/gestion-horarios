@@ -39,11 +39,6 @@ public class InscripcionController {
         this.materiaService = materiaService;
     }
 
-    @GetMapping("/menu")
-    public String mostrarMenu() {
-        return "inscripcion/menu";
-    }
-
     @GetMapping("/nueva")
     public String mostrarFormNuevaInscripcio(Model model) {
 

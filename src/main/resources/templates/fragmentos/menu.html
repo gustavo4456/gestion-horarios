@@ -1,0 +1,50 @@
+<header th:fragment="menu">
+
+    <nav>
+        <ul class="menu">
+
+            <li>
+                <a th:href="@{/home}">Horarios</a>
+            </li>
+
+            <li>
+                <a href="#">Gestión Persona</a>
+                <ul class="submenu">
+                    <li><a th:href="@{/persona/listado}">Listado de personas en la BD.</a></li>
+                    <li><a th:href="@{/persona/nueva}">Crear una persona.</a></li>
+                    <li><a th:href="@{/persona/buscar}">Buscar Por ID.</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">Gestión Materia</a>
+                <ul class="submenu">
+                    <li><a th:href="@{/materia/listado}">Listado de materias en la BD.</a></li>
+                    <li><a th:href="@{/materia/nueva}">Crear una materia.</a></li>
+                    <li><a th:href="@{/materia/buscar}">Buscar Por ID.</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">Gestión Horario</a>
+                <ul class="submenu">
+                    <li><a th:href="@{/horario/listado}">Listado de horarios en la BD.</a></li>
+                    <li><a th:href="@{/horario/nuevo}">Crear un horario.</a></li>
+                    <li><a th:href="@{/horario/buscar}">Buscar Por ID.</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">Gestión Inscripción</a>
+                <ul class="submenu">
+
+                    <li><a th:href="@{/inscripcion/listado}">Listado de inscripciones en la BD.</a></li>
+                    <li><a th:href="@{/inscripcion/nueva}">Crear una inscripcion.</a></li>
+                    <li><a th:href="@{/inscripcion/buscar}">Buscar Por ID.</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+
+</header>

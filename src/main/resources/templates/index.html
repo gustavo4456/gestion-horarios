@@ -4,20 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Menú Horarios</title>
 </head>
 
 <body>
 
-    <h2>Menú</h2>
-
-    <ol>
-        <li><a th:href="@{/persona/menu-persona}">Gestión de personas</a></li>
-        <li><a th:href="@{/materia/menu}">Gestión de materias</a></li>
-        <li><a th:href="@{/horario/menu}">Gestión de horarios</a></li>
-        <li><a th:href="@{/inscripcion/menu}">Gestión de inscripciones</a></li>
-    </ol>
-
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
 </body>
 
 </html>

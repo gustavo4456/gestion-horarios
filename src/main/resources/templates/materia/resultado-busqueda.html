@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Resultado de la Busqueda</title>
 </head>
 
 <body>
 
-    <h2>Resultado de busqueda de materia</h2>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <a th:href="@{/materia/menu}">menu</a>
-    <a th:href="@{/materia/buscar}">volver a buscar</a>
+    <h2>Resultado de busqueda de materia</h2>
 
     <div th:object="${materia}">
         <h3>Id: </h3>

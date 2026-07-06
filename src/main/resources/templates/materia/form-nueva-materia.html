@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Agregar Materia</title>
 </head>
 
 <body>
-    <h2>Nueva Materia</h2>
 
-    <a th:href="@{/materia/menu}">Menu</a>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <h2>Nueva Materia</h2>
 
 
     <form th:action="@{/materia/guardar}" th:object="${nuevaMateria}" method="post">

@@ -34,11 +34,6 @@ public class HorarioController {
         this.materiaService = materiaService;
     }
 
-    @GetMapping("/menu")
-    public String mostrarMenu() {
-        return "horario/menu";
-    }
-
     @GetMapping("/nuevo")
     public String mostrarFormNuevoHorario(Model model) {
 

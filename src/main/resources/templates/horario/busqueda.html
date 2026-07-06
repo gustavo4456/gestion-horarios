@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Busqueda de horario</title>
 </head>
 
 <body>
+
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
     <h2>Buscar Horario por ID</h2>
 
-    <a th:href="@{/horario/menu}">Menú horario</a>
 
     <form th:action="@{/horario/buscando}" method="get">
         <label for="id">Id:</label>

@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title th:text="'Listado de materias (' + ${listadoMaterias.size} + ')'">Listado de materias </title>
 </head>
 
 <body>
 
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
     <h2>Listado de materias</h2>
-    <a th:href="@{/materia/menu}">menú materias</a>
 
     <table border="1">
         <thead>

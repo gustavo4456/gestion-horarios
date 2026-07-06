@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Busqueda de materia</title>
 </head>
 
 <body>
-    <h2>Buscar Materia por ID</h2>
 
-    <a th:href="@{/materia/menu}">Menú materia</a>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <h2>Buscar Materia por ID</h2>
 
     <form th:action="@{/materia/buscando}" method="get">
         <label for="id">Id:</label>

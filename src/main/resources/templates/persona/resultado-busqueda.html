@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Resultado busqueda</title>
 </head>
 
 <body>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
 
     <h2>Resutlado:</h2>
 
-    <a th:href="@{/persona/menu-persona}">menu</a>
-    <a th:href="@{/persona/buscar}">volver a buscar</a>
+
 
     <div th:object="${persona}">
         <h3>Id: </h3>

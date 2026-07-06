@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Editar Horario</title>
 </head>
 
 <body>
 
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
     <h2>Editar horario</h2>
 
-
-    <a th:href="@{/horario/menu}">Menú</a>
-    <a th:href="@{/home}">Menú General</a>
 
     <form th:action="@{/horario/editar}" method="post" th:object="${horarioDb}">
 

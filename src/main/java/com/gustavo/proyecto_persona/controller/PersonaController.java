@@ -30,11 +30,6 @@ public class PersonaController {
         this.personaService = personaService;
     }
 
-    @GetMapping("/menu-persona")
-    public String getInicio() {
-        return "/persona/menu-persona";
-    }
-
     @GetMapping("/listado")
     public String getListadoDePersonas(Model model) {
 

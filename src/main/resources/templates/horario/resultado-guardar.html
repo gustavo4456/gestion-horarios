@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Resultado Horario</title>
 </head>
 
 <body>
+
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
     <h2>Se guardaron los siguientes datos: </h2>
-    <a th:href="@{/home}">Menú General</a>
-    <a th:href="@{/horario/menu}">Menú</a>
+
 
     <table border="1">
 

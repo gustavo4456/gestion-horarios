@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title>Crear Persona</title>
 </head>
 
 <body>
-    <a th:href="@{/persona/menu-persona}">menu</a>
+
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
 
     <form th:action="@{/persona/guardar}" th:object="${persona}" method="post">
         <label for="nombre">Nombre:</label>
