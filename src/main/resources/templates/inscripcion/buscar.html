@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <title>Buscar Inscripción</title>
+</head>
+
+<body>
+
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <h2>Buscar Inscripción</h2>
+
+    <form th:action="@{/inscripcion/busqueda}" method="get">
+
+        <label for="persona">Personas:</label>
+        <select name="persona">
+            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
+        </select>
+
+        <label for="anioLectivo">Año Lectivo:</label>
+        <input type="number" name="anioLectivo" id="anioLectivo">
+
+        <input type="submit" value="Buscar">
+    </form>
+
+</body>
+
+</html>

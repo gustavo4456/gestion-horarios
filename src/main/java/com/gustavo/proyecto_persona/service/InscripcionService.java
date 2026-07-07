@@ -110,4 +110,32 @@ public class InscripcionService {
 
     }
 
+    public List<Inscripcion> getInscripcionesPorPersona(Long idPersona) throws EntityNotFoundException {
+
+        if (idPersona <= 0) {
+            throw new EntityNotFoundException("Debe seleccionar una persona.");
+        }
+
+        return inscripcionRepository.findByPersonaId(idPersona);
+    }
+
+    public List<Inscripcion> getInscripcionesPorAnioLectivo(Integer anioLectivo) throws EntityNotFoundException {
+
+        if (anioLectivo <= 0) {
+            throw new EntityNotFoundException("Debe ingresar un año lectivo positivo.");
+        }
+
+        return inscripcionRepository.findByAnioLectivo(anioLectivo);
+    }
+
+    public List<Inscripcion> getInscripcionesPorPersonaYAnioLectivo(Long idPersona, Integer anioLectivo)
+            throws EntityNotFoundException {
+
+        if (anioLectivo <= 0 || idPersona <= 0) {
+            throw new EntityNotFoundException("Debe ingresar un año lectivo positivo y seleccionar una persona.");
+        }
+
+        return inscripcionRepository.findByPersonaIdAndAnioLectivo(idPersona, anioLectivo);
+    }
+
 }

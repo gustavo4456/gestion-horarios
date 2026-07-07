@@ -169,8 +169,42 @@ public class InscripcionController {
     public String mostrarListado(Model model) {
 
         List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
+        List<Persona> personas = personaService.getPersonas();
+
+        model.addAttribute("personas", personas);
 
         model.addAttribute("inscripciones", inscripciones);
+
+        return "inscripcion/listado";
+    }
+
+    @GetMapping("/filtro-inscripciones")
+    public String filtroListado(@RequestParam(name = "persona", required = false) Long idPersona,
+            @RequestParam(required = false) Integer anioLectivo,
+            Model model) {
+
+        if (idPersona == null && anioLectivo != null) {
+            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorAnioLectivo(anioLectivo);
+
+            model.addAttribute("inscripciones", inscripciones);
+        } else if (idPersona != null && anioLectivo == null) {
+            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersona(idPersona);
+
+            model.addAttribute("inscripciones", inscripciones);
+        } else if (idPersona != null && anioLectivo != null) {
+            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersonaYAnioLectivo(idPersona,
+                    anioLectivo);
+
+            model.addAttribute("inscripciones", inscripciones);
+        } else {
+            List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
+
+            model.addAttribute("inscripciones", inscripciones);
+        }
+
+        List<Persona> personas = personaService.getPersonas();
+
+        model.addAttribute("personas", personas);
 
         return "inscripcion/listado";
     }

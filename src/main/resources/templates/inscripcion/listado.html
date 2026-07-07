@@ -12,6 +12,22 @@
 
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
+
+    <h2>Buscar Inscripción</h2>
+
+    <form th:action="@{/inscripcion/filtro-inscripciones}" method="get">
+
+        <label for="persona">Personas:</label>
+        <select name="persona">
+            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
+        </select>
+
+        <label for="anioLectivo">Año Lectivo:</label>
+        <input type="number" name="anioLectivo" id="anioLectivo">
+
+        <input type="submit" value="Buscar">
+    </form>
+
     <h2>Listado de Inscripciones</h2>
 
 
