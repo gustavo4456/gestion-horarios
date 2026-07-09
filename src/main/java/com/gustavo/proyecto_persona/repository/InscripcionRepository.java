@@ -15,4 +15,6 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
 
     // 🔍 3. Combinado: Buscar por el ID de la Persona Y el Año Lectivo
     List<Inscripcion> findByPersonaIdAndAnioLectivo(Long personaId, Integer anioLectivo);
+
+    boolean existsByPersonaIdAndAnioLectivo(Long personaId, Integer anioLectivo);
 }

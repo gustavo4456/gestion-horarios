@@ -62,6 +62,16 @@ public class InscripcionService {
 
         }
 
+        boolean existe = inscripcionRepository
+                .existsByPersonaIdAndAnioLectivo(
+                        inscripcion.getPersona().getId(),
+                        inscripcion.getAnioLectivo());
+
+        if (existe) {
+            throw new EntityNotFoundException(
+                    "La persona ya tiene una inscripción para ese año lectivo.");
+        }
+
         Inscripcion inscripcionGuardada = inscripcionRepository.save(inscripcion);
 
         for (Long idMateria : seleccion) {
