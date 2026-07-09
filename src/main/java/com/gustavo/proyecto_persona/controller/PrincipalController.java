@@ -1,13 +1,92 @@
 package com.gustavo.proyecto_persona.controller;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.gustavo.proyecto_persona.dto.HorarioDto;
+import com.gustavo.proyecto_persona.enums.DiasSemana;
+import com.gustavo.proyecto_persona.model.Inscripcion;
+import com.gustavo.proyecto_persona.model.Materia;
+import com.gustavo.proyecto_persona.model.Persona;
+import com.gustavo.proyecto_persona.service.InscripcionService;
+import com.gustavo.proyecto_persona.service.PersonaService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PrincipalController {
+
+    private final PersonaService personaService;
+    private final InscripcionService inscripcionService;
+
+    public PrincipalController(PersonaService personaService, InscripcionService inscripcionService) {
+        this.personaService = personaService;
+        this.inscripcionService = inscripcionService;
+    }
 
     @GetMapping("/home")
     public String getIndex() {
         return "index";
     }
+
+    @GetMapping("/horarios")
+    public String getHorarios(Model model) {
+
+        List<Persona> personas = personaService.getPersonas();
+
+        model.addAttribute("personas", personas);
+
+        return "principal/horarios";
+    }
+
+    @GetMapping("/filtro-horarios")
+    public String filtroHorarios(@RequestParam Long persona, @RequestParam Integer anioLectivo, Model model) {
+
+        List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersonaYAnioLectivo(persona,
+                anioLectivo);
+
+        Map<Integer, List<HorarioDto>> horariosPorAnio = inscripciones.stream()
+                .flatMap(inscripcion -> inscripcion.getMaterias().stream())
+                .flatMap(materia -> materia.getHorarios().stream()
+                        .map(horario -> new HorarioDto(
+                                materia.getNombre(),
+                                materia.getAnioCursada(),
+                                horario.getDiasSemana(),
+                                horario.getHoraInicio(),
+                                horario.getHoraFin(),
+                                horario.getTipoMateria())))
+                .collect(Collectors.groupingBy(
+                        HorarioDto::getAnio,
+                        TreeMap::new,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                lista -> lista.stream()
+                                        .sorted(Comparator.comparing(HorarioDto::getHoraInicio))
+                                        .toList())));
+
+        List<Persona> personas = personaService.getPersonas();
+
+        List<String> horas = horariosPorAnio.values()
+                .stream()
+                .flatMap(List::stream)
+                .sorted(Comparator.comparing(HorarioDto::getHoraInicio))
+                .map(h -> h.getHoraInicio() + " - " + h.getHoraFin())
+                .distinct()
+                .toList();
+
+        model.addAttribute("horas", horas);
+
+        model.addAttribute("personas", personas);
+        model.addAttribute("horariosPorAnio", horariosPorAnio);
+        model.addAttribute("diasSemana", DiasSemana.values());
+
+        return "principal/horarios";
+    }
+
 }

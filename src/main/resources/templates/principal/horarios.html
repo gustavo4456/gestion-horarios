@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <title>Horarios</title>
+</head>
+
+<body>
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <h2>Buscar Horarios</h2>
+
+    <form th:action="@{/filtro-horarios}" method="get">
+
+        <label for="persona">Personas:</label>
+        <select name="persona">
+            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
+        </select>
+
+        <label for="anioLectivo">Año Lectivo:</label>
+        <input type="number" name="anioLectivo" id="anioLectivo">
+
+        <input type="submit" value="Buscar">
+    </form>
+
+    <h2>Listado de Horarios</h2>
+
+    <div th:each="entry : ${horariosPorAnio}">
+
+        <h2 th:text="${entry.key} + '° Año'"></h2>
+
+        <table border="1">
+
+            <thead>
+                <tr>
+                    <th>Horario</th>
+
+                    <th th:each="dia : ${diasSemana}" th:text="${dia}">
+                    </th>
+
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                <tr th:each="hora : ${horas}">
+
+                    <!-- Columna de horario -->
+                    <td th:text="${hora}"></td>
+
+
+                    <!-- Columnas de días -->
+                    <td th:each="dia : ${diasSemana}">
+
+                        <div th:each="h : ${entry.value}" th:if="${h.dia == dia 
+                         and (h.horaInicio + ' - ' + h.horaFin) == hora}">
+
+                            <strong th:text="${h.materia}"></strong>
+
+                            <br>
+
+                            <small th:text="${h.tipoMateria}"></small>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>
