@@ -85,6 +85,7 @@ public class PrincipalController {
         model.addAttribute("personas", personas);
         model.addAttribute("horariosPorAnio", horariosPorAnio);
         model.addAttribute("diasSemana", DiasSemana.values());
+        model.addAttribute("anioLectivo", anioLectivo);
 
         return "principal/horarios";
     }
