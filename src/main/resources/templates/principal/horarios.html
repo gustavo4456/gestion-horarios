@@ -36,34 +36,33 @@
 
             <thead>
                 <tr>
-                    <th>Horario</th>
-
-                    <th th:each="dia : ${diasSemana}" th:text="${dia}">
-                    </th>
-
+                    <!-- <th>Horario</th> -->
+                    <th th:each="dia : ${diasSemana}" th:text="${dia}"></th>
                 </tr>
             </thead>
 
-
             <tbody>
 
-                <tr th:each="hora : ${horas}">
+                <tr th:each="hora : ${horasPorAnioMap.get(entry.key)}">
 
                     <!-- Columna de horario -->
-                    <td th:text="${hora}"></td>
-
+                    <!-- <td th:text="${hora}"></td> -->
 
                     <!-- Columnas de días -->
                     <td th:each="dia : ${diasSemana}">
 
                         <div th:each="h : ${entry.value}" th:if="${h.dia == dia 
-                         and (h.horaInicio + ' - ' + h.horaFin) == hora}">
+                         and (h.horaInicio.toString() + ' - ' + h.horaFin.toString()) == hora}">
 
                             <strong th:text="${h.materia}"></strong>
 
                             <br>
 
                             <small th:text="${h.tipoMateria}"></small>
+
+                            <br>
+
+                            <small th:text="${(h.horaInicio + ' - ' + h.horaFin)}"></small>
 
                         </div>
 

@@ -72,18 +72,17 @@ public class PrincipalController {
 
         List<Persona> personas = personaService.getPersonas();
 
-        List<String> horas = horariosPorAnio.values()
-                .stream()
-                .flatMap(List::stream)
-                .sorted(Comparator.comparing(HorarioDto::getHoraInicio))
-                .map(h -> h.getHoraInicio() + " - " + h.getHoraFin())
-                .distinct()
-                .toList();
-
-        model.addAttribute("horas", horas);
+        Map<Integer, List<String>> horasPorAnioMap = horariosPorAnio.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .map(h -> h.getHoraInicio() + " - " + h.getHoraFin())
+                                .distinct()
+                                .toList()));
 
         model.addAttribute("personas", personas);
         model.addAttribute("horariosPorAnio", horariosPorAnio);
+        model.addAttribute("horasPorAnioMap", horasPorAnioMap); // 🚀 Enviamos el mapa a la vista
         model.addAttribute("diasSemana", DiasSemana.values());
         model.addAttribute("anioLectivo", anioLectivo);
 
