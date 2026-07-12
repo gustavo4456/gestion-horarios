@@ -5,22 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title th:text="'Listado de personas (' + ${cantidadPersonas} +')'">Listado de personas</title>
+    <title th:text="'Listado de perfiles (' + ${cantidadPersonas} +')'">Listado de perfiles</title>
 </head>
 
 <body>
 
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Listado de las personas en la BD</h2>
+    <h2>Listado de los perfiles en la BD</h2>
     <table border="1">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>dni</th>
                 <th>Opción</th>
             </tr>
         </thead>
@@ -28,12 +25,9 @@
             <tr th:each="p : ${listadoPersonas}">
                 <td th:text="${p.id}">0</td>
                 <td th:text="${p.nombre}">Nombre</td>
-                <td th:text="${p.apellido}">apellido</td>
-                <td th:text="${p.edad}">edad</td>
-                <td th:text="${p.dni}">dni</td>
                 <td>
-                    <a th:href="@{/persona/{id}/eliminar(id=${p.id})}">Eliminar</a>
-                    <a th:href="@{/persona/{id}/form-editar(id=${p.id})}">Editar</a>
+                    <a th:href="@{/perfil/{id}/eliminar(id=${p.id})}">Eliminar</a>
+                    <a th:href="@{/perfil/{id}/form-editar(id=${p.id})}">Editar</a>
                 </td>
             </tr>
         </tbody>

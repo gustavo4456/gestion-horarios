@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gustavo.proyecto_persona.dto.PersonaAEditarDto;
-import com.gustavo.proyecto_persona.dto.PersonaAGuardarDto;
-import com.gustavo.proyecto_persona.model.Persona;
-import com.gustavo.proyecto_persona.service.PersonaService;
+import com.gustavo.proyecto_persona.dto.PerfilAEditarDto;
+import com.gustavo.proyecto_persona.dto.PerfilAGuardarDto;
+import com.gustavo.proyecto_persona.model.Perfil;
+import com.gustavo.proyecto_persona.service.PerfilService;
 
 import jakarta.validation.Valid;
 
@@ -21,70 +21,70 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/persona")
-public class PersonaController {
+@RequestMapping("/perfil")
+public class PerfilController {
 
-    private final PersonaService personaService;
+    private final PerfilService perfilService;
 
-    public PersonaController(PersonaService personaService) {
-        this.personaService = personaService;
+    public PerfilController(PerfilService perfilService) {
+        this.perfilService = perfilService;
     }
 
     @GetMapping("/listado")
     public String getListadoDePersonas(Model model) {
 
-        List<Persona> personas = personaService.getPersonas();
-        int cantidadPersonas = personas.size();
+        List<Perfil> perfiles = perfilService.getPersonas();
+        int cantidadPersonas = perfiles.size();
 
-        model.addAttribute("listadoPersonas", personas);
+        model.addAttribute("listadoPersonas", perfiles);
         model.addAttribute("cantidadPersonas", cantidadPersonas);
 
-        return "/persona/listado-personas";
+        return "/perfil/listado-personas";
 
     }
 
     @GetMapping("/nueva")
     public String mostrarFormNuevaPersona(Model model) {
 
-        model.addAttribute("persona", new PersonaAGuardarDto());
+        model.addAttribute("persona", new PerfilAGuardarDto());
 
-        return "/persona/form-nueva-persona";
+        return "/perfil/form-nueva-persona";
     }
 
     @PostMapping("/guardar")
-    public String postGuardarPersona(@Valid @ModelAttribute("persona") PersonaAGuardarDto persona, BindingResult result,
+    public String postGuardarPersona(@Valid @ModelAttribute("persona") PerfilAGuardarDto persona, BindingResult result,
             Model model) {
 
         if (result.hasErrors()) {
-            return "/persona/form-nueva-persona";
+            return "/perfil/form-nueva-persona";
         }
 
         model.addAttribute("msj", "Persona Guardada con exito.");
 
-        personaService.guardarPersona(persona);
+        perfilService.guardarPersona(persona);
 
         return "mensaje";
     }
 
     @GetMapping("/buscar")
     public String getBuscar() {
-        return "/persona/busqueda";
+        return "/perfil/busqueda";
     }
 
     @GetMapping("/buscando")
     public String getBuscadoPorIdString(@RequestParam("idBusqueda") Long id, Model model) {
 
-        Persona persona = personaService.getPersonaPorId(id);
+        Perfil persona = perfilService.getPersonaPorId(id);
 
         model.addAttribute("persona", persona);
 
-        return "/persona/resultado-busqueda";
+        return "/perfil/resultado-busqueda";
     }
 
     @GetMapping("/{id}/eliminar")
     public String eliminarPersona(@PathVariable("id") Long id, Model model) {
 
-        personaService.borrarPersona(id);
+        perfilService.borrarPersona(id);
 
         model.addAttribute("msj", "Usuario Eliminado.");
 
@@ -94,29 +94,26 @@ public class PersonaController {
     @GetMapping("/{id}/form-editar")
     public String mostrarFormEditar(@PathVariable("id") Long idPersona, Model model) {
 
-        Persona persona = personaService.getPersonaPorId(idPersona);
+        Perfil perfil = perfilService.getPersonaPorId(idPersona);
 
-        PersonaAEditarDto personaAEditar = new PersonaAEditarDto();
-        personaAEditar.setId(persona.getId());
-        personaAEditar.setNombre(persona.getNombre());
-        personaAEditar.setApellido(persona.getApellido());
-        personaAEditar.setEdad(persona.getEdad());
-        personaAEditar.setDni(persona.getDni());
+        PerfilAEditarDto perfilAEditar = new PerfilAEditarDto();
+        perfilAEditar.setId(perfil.getId());
+        perfilAEditar.setNombre(perfil.getNombre());
 
-        model.addAttribute("persona", personaAEditar);
+        model.addAttribute("persona", perfilAEditar);
 
-        return "/persona/form-editar-persona";
+        return "/perfil/form-editar-persona";
     }
 
     @PostMapping("/editar")
-    public String postEditarPersona(@Valid @ModelAttribute("persona") PersonaAEditarDto persona, BindingResult result,
+    public String postEditarPersona(@Valid @ModelAttribute("persona") PerfilAEditarDto persona, BindingResult result,
             Model model) {
 
         if (result.hasErrors()) {
-            return "/persona/form-editar-persona";
+            return "/perfil/form-editar-persona";
         }
 
-        personaService.actualizarPersona(persona);
+        perfilService.actualizarPersona(persona);
 
         model.addAttribute("msj", "Los Datos de la Persona fueron actualizados.");
 

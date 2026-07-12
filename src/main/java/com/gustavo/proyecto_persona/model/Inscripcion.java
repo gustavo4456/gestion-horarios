@@ -27,9 +27,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = { "id", "materias", "persona" })
+@ToString(exclude = { "id", "materias", "perfil" })
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "persona_id", "anio_lectivo" })
+        @UniqueConstraint(columnNames = { "perfil_id", "anio_lectivo" })
 })
 public class Inscripcion {
 
@@ -41,9 +41,9 @@ public class Inscripcion {
     private Integer anioLectivo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "persona_id")
-    @NotNull(message = "Debe seleccionar una persona.")
-    private Persona persona;
+    @JoinColumn(name = "perfil_id")
+    @NotNull(message = "Debe seleccionar un perfil.")
+    private Perfil perfil;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "inscripcion_materia", joinColumns = @JoinColumn(name = "inscripcion_id"), inverseJoinColumns = @JoinColumn(name = "materia_id"))

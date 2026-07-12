@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <title>Crear Perfil</title>
+</head>
+
+<body>
+
+    <header th:replace="~{fragmentos/menu :: menu}"></header>
+
+    <form th:action="@{/perfil/guardar}" th:object="${persona}" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" th:field="*{nombre}" id="nombre">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;">
+
+        </span>
+
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+
+</html>

@@ -63,8 +63,8 @@ public class InscripcionService {
         }
 
         boolean existe = inscripcionRepository
-                .existsByPersonaIdAndAnioLectivo(
-                        inscripcion.getPersona().getId(),
+                .existsByPerfilIdAndAnioLectivo(
+                        inscripcion.getPerfil().getId(),
                         inscripcion.getAnioLectivo());
 
         if (existe) {
@@ -97,7 +97,7 @@ public class InscripcionService {
 
         // 3. Actualizamos los datos básicos del formulario
         inscripcionDB.setAnioLectivo(inscripcion.getAnioLectivo());
-        inscripcionDB.setPersona(inscripcion.getPersona());
+        inscripcionDB.setPerfil(inscripcion.getPerfil());
 
         // 🚀 PASO CLAVE: Desvincular las materias viejas de forma bidireccional
         for (Materia matDB : inscripcionDB.getMaterias()) {
@@ -126,7 +126,7 @@ public class InscripcionService {
             throw new EntityNotFoundException("Debe seleccionar una persona.");
         }
 
-        return inscripcionRepository.findByPersonaId(idPersona);
+        return inscripcionRepository.findByPerfilId(idPersona);
     }
 
     public List<Inscripcion> getInscripcionesPorAnioLectivo(Integer anioLectivo) throws EntityNotFoundException {
@@ -145,7 +145,7 @@ public class InscripcionService {
             throw new EntityNotFoundException("Debe ingresar un año lectivo positivo y seleccionar una persona.");
         }
 
-        return inscripcionRepository.findByPersonaIdAndAnioLectivo(idPersona, anioLectivo);
+        return inscripcionRepository.findByPerfilIdAndAnioLectivo(idPersona, anioLectivo);
     }
 
 }

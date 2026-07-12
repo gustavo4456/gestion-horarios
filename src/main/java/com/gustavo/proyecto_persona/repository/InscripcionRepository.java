@@ -8,13 +8,13 @@ import com.gustavo.proyecto_persona.model.Inscripcion;
 
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> {
     // 🔍 1. Buscar inscripciones por el ID de la Persona
-    List<Inscripcion> findByPersonaId(Long personaId);
+    List<Inscripcion> findByPerfilId(Long personaId);
 
     // 🔍 2. Buscar inscripciones por Año Lectivo
     List<Inscripcion> findByAnioLectivo(Integer anioLectivo);
 
     // 🔍 3. Combinado: Buscar por el ID de la Persona Y el Año Lectivo
-    List<Inscripcion> findByPersonaIdAndAnioLectivo(Long personaId, Integer anioLectivo);
+    List<Inscripcion> findByPerfilIdAndAnioLectivo(Long personaId, Integer anioLectivo);
 
-    boolean existsByPersonaIdAndAnioLectivo(Long personaId, Integer anioLectivo);
+    boolean existsByPerfilIdAndAnioLectivo(Long personaId, Integer anioLectivo);
 }

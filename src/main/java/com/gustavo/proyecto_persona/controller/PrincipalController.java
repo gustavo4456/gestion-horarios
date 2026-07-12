@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.gustavo.proyecto_persona.dto.HorarioDto;
 import com.gustavo.proyecto_persona.enums.DiasSemana;
 import com.gustavo.proyecto_persona.model.Inscripcion;
-import com.gustavo.proyecto_persona.model.Materia;
-import com.gustavo.proyecto_persona.model.Persona;
+import com.gustavo.proyecto_persona.model.Perfil;
 import com.gustavo.proyecto_persona.service.InscripcionService;
-import com.gustavo.proyecto_persona.service.PersonaService;
+import com.gustavo.proyecto_persona.service.PerfilService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PrincipalController {
 
-    private final PersonaService personaService;
+    private final PerfilService personaService;
     private final InscripcionService inscripcionService;
 
-    public PrincipalController(PersonaService personaService, InscripcionService inscripcionService) {
+    public PrincipalController(PerfilService personaService, InscripcionService inscripcionService) {
         this.personaService = personaService;
         this.inscripcionService = inscripcionService;
     }
@@ -38,7 +37,7 @@ public class PrincipalController {
     @GetMapping("/horarios")
     public String getHorarios(Model model) {
 
-        List<Persona> personas = personaService.getPersonas();
+        List<Perfil> personas = personaService.getPersonas();
 
         model.addAttribute("personas", personas);
 
@@ -70,7 +69,7 @@ public class PrincipalController {
                                         .sorted(Comparator.comparing(HorarioDto::getHoraInicio))
                                         .toList())));
 
-        List<Persona> personas = personaService.getPersonas();
+        List<Perfil> personas = personaService.getPersonas();
 
         Map<Integer, List<String>> horasPorAnioMap = horariosPorAnio.entrySet().stream()
                 .collect(Collectors.toMap(

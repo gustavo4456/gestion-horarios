@@ -40,11 +40,11 @@
 
         <input type="number" th:field="*{id}" hidden>
 
-        <label for="persona">Persona:</label>
-        <select th:field="*{persona}">
+        <label for="persona">Perfil:</label>
+        <select th:field="*{perfil}">
             <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
         </select>
-        <span th:if="${#fields.hasErrors('persona')}" th:errors="*{persona}" style="color: red;"></span>
+        <span th:if="${#fields.hasErrors('perfil')}" th:errors="*{perfil}" style="color: red;"></span>
 
         <label for="anioLectivo">Año Lectivo:</label>
         <select th:field="*{anioLectivo}">

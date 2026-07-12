@@ -14,22 +14,11 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "dni")
 @ToString(exclude = "id")
-public class PersonaAEditarDto {
+public class PerfilAEditarDto {
 
     private Long id;
 
     @NotBlank(message = "El nombre de la persona es obligatorio.")
     private String nombre;
-
-    @NotBlank(message = "El apellido de la persona es obligatorio.")
-    private String apellido;
-
-    @NotNull
-    @Min(value = 18, message = "No se permite personas menores de 18 años.")
-    private Integer edad;
-
-    @NotBlank(message = "El de dni de la persona es obligatorio.")
-    private String dni;
 }

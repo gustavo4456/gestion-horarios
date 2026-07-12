@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.gustavo.proyecto_persona.model.Inscripcion;
 import com.gustavo.proyecto_persona.model.Materia;
-import com.gustavo.proyecto_persona.model.Persona;
+import com.gustavo.proyecto_persona.model.Perfil;
 import com.gustavo.proyecto_persona.service.InscripcionService;
 import com.gustavo.proyecto_persona.service.MateriaService;
-import com.gustavo.proyecto_persona.service.PersonaService;
+import com.gustavo.proyecto_persona.service.PerfilService;
 
 import jakarta.validation.Valid;
 
@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping("/inscripcion")
 public class InscripcionController {
 
-    private final PersonaService personaService;
+    private final PerfilService perfilService;
     private final InscripcionService inscripcionService;
     private final MateriaService materiaService;
 
-    public InscripcionController(PersonaService personaService, InscripcionService inscripcionService,
+    public InscripcionController(PerfilService perfilService, InscripcionService inscripcionService,
             MateriaService materiaService) {
-        this.personaService = personaService;
+        this.perfilService = perfilService;
         this.inscripcionService = inscripcionService;
         this.materiaService = materiaService;
     }
@@ -169,7 +169,7 @@ public class InscripcionController {
     public String mostrarListado(Model model) {
 
         List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
-        List<Persona> personas = personaService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas();
 
         model.addAttribute("personas", personas);
 
@@ -202,7 +202,7 @@ public class InscripcionController {
             model.addAttribute("inscripciones", inscripciones);
         }
 
-        List<Persona> personas = personaService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas();
 
         model.addAttribute("personas", personas);
 
@@ -261,7 +261,7 @@ public class InscripcionController {
             model.addAttribute("inscripcion", new Inscripcion());
         }
 
-        List<Persona> personas = personaService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas();
         model.addAttribute("personas", personas);
 
         model.addAttribute("aniosLectivo",

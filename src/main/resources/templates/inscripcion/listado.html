@@ -17,7 +17,7 @@
 
     <form th:action="@{/inscripcion/filtro-inscripciones}" method="get">
 
-        <label for="persona">Personas:</label>
+        <label for="persona">Perfiles:</label>
         <select name="persona">
             <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
         </select>
@@ -36,7 +36,7 @@
 
         <thead>
             <th>ID</th>
-            <th>Persona</th>
+            <th>Perfil</th>
             <th>Año lectivo</th>
             <th>Materias</th>
             <th>Opciones</th>
@@ -44,7 +44,7 @@
 
         <tbody th:each="i : ${inscripciones}">
             <td th:text="${i.id}">ID</td>
-            <td th:text="${i.persona.nombre}">Nombre</td>
+            <td th:text="${i.perfil.nombre}">Nombre</td>
             <td th:text="${i.anioLectivo}">Año lectivo</td>
             <td th:text="${i.materias.size}">Materias</td>
             <td>
