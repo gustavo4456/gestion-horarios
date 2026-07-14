@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuario</title>
+
+</head>
+
+<body>
+
+    <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif;">
+        <h2>Crear Cuenta</h2>
+
+        <!-- Mensaje de error personalizado si el usuario ya existe -->
+        <div th:if="${error}" style="color: red; margin-bottom: 15px;">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/registro}" th:object="${usuario}" method="post">
+            <div style="margin-bottom: 15px;">
+                <label>Nombre de Usuario:</label><br>
+                <input type="text" th:field="*{username}" required style="width: 100%; padding: 8px;" />
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>Contraseña:</label><br>
+                <input type="password" th:field="*{password}" required style="width: 100%; padding: 8px;" />
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
+            </div>
+
+            <button type="submit"
+                style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+                Registrarse
+            </button>
+        </form>
+
+        <p style="margin-top: 15px;">¿Ya tenés cuenta? <a th:href="@{/login}">Inicia sesión acá</a></p>
+    </div>
+</body>
+
+</html>

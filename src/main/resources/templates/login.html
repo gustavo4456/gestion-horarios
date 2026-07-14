@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+</head>
+
+<body>
+
+    <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif;">
+        <h2>Iniciar Sesión</h2>
+
+        <!-- Mensaje si viene redirigido después de registrarse con éxito -->
+        <div th:if="${param.registrado}" style="color: green; margin-bottom: 15px;">
+            <p>¡Registro exitoso! Ya podés ingresar.</p>
+        </div>
+
+        <!-- Mensaje de error si el usuario o contraseña no coinciden -->
+        <div th:if="${param.error}" style="color: red; margin-bottom: 15px;">
+            <p>Usuario o contraseña incorrectos.</p>
+        </div>
+
+        <!-- Mensaje si cerró sesión -->
+        <div th:if="${param.logout}" style="color: blue; margin-bottom: 15px;">
+            <p>Has cerrado sesión correctamente.</p>
+        </div>
+
+        <!-- El action de este formulario DEBE ser /login y el método POST -->
+        <form th:action="@{/login}" method="post">
+            <div style="margin-bottom: 15px;">
+                <!-- Spring Security busca estrictamente el atributo name="username" -->
+                <label>Usuario:</label><br>
+                <input type="text" name="username" required style="width: 100%; padding: 8px;" />
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <!-- Spring Security busca estrictamente el atributo name="password" -->
+                <label>Contraseña:</label><br>
+                <input type="password" name="password" required style="width: 100%; padding: 8px;" />
+            </div>
+
+            <button type="submit"
+                style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer;">
+                Ingresar
+            </button>
+        </form>
+
+        <p style="margin-top: 15px;">¿No tenés cuenta? <a th:href="@{/registro}">Registrate acá</a></p>
+    </div>
+</body>
+
+</html>

@@ -37,9 +37,38 @@
             <li>
                 <a href="#">Gestión Inscripción</a>
                 <ul class="submenu">
-
                     <li><a th:href="@{/inscripcion/listado}">Listado de inscripciones en la BD.</a></li>
                     <li><a th:href="@{/inscripcion/nueva}">Crear una inscripcion.</a></li>
+                </ul>
+            </li>
+
+            <!-- 🌟 ZONA DE USUARIO Y CERRAR SESIÓN -->
+            <!-- th:if asegura que solo se muestre si hay una sesión activa de un usuario real -->
+            <!-- 🌟 ZONA DE USUARIO Y CERRAR SESIÓN -->
+            <!-- sec:authorize="isAuthenticated()" reemplaza al th:if y es mucho más seguro -->
+            <li sec:authorize="isAuthenticated()">
+                <a href="#" style="color: #007bff; font-weight: bold;">
+                    👤 <span sec:authentication="name">Nombre de Usuario</span>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <form th:action="@{/logout}" method="post" style="padding: 0; margin: 0;">
+                            <button type="submit" style="
+                                background: none; 
+                                border: none; 
+                                color: #ff4d4d; 
+                                cursor: pointer; 
+                                font-family: inherit; 
+                                font-size: inherit; 
+                                padding: 10px 15px; 
+                                width: 100%; 
+                                text-align: left;
+                                display: block;
+                            ">
+                                Cerrar Sesión
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </li>
 
