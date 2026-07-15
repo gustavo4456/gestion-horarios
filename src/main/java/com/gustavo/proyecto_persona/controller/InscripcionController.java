@@ -44,7 +44,7 @@ public class InscripcionController {
     @GetMapping("/nueva")
     public String mostrarFormNuevaInscripcio(Model model, Principal principal) {
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
         model.addAttribute("listadoMaterias", materias);
 
         carga(true, model, principal);
@@ -58,7 +58,7 @@ public class InscripcionController {
 
         if (result.hasErrors()) {
 
-            List<Materia> materias = materiaService.getMaterias();
+            List<Materia> materias = materiaService.getMaterias(principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             carga(false, model, principal);
@@ -66,7 +66,7 @@ public class InscripcionController {
             return "inscripcion/nueva";
         }
 
-        inscripcionService.guardarInscripcion(inscripcion, seleccion);
+        inscripcionService.guardarInscripcion(inscripcion, seleccion, principal);
 
         model.addAttribute("msj", "Se guardo la inscripción en la BD.");
 
@@ -79,7 +79,7 @@ public class InscripcionController {
 
         if (nombre.isBlank() && anioCursadaFiltro != null) {
 
-            List<Materia> materias = materiaService.buscarPorAnioCursada(anioCursadaFiltro);
+            List<Materia> materias = materiaService.buscarPorAnioCursada(anioCursadaFiltro, principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             carga(true, model, principal);
@@ -89,7 +89,7 @@ public class InscripcionController {
 
         if (!nombre.isBlank() && anioCursadaFiltro == null) {
 
-            List<Materia> materias = materiaService.buscarPorNombre(nombre);
+            List<Materia> materias = materiaService.buscarPorNombre(nombre, principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             carga(true, model, principal);
@@ -99,7 +99,8 @@ public class InscripcionController {
 
         if (!nombre.isBlank() && anioCursadaFiltro != null) {
 
-            List<Materia> materias = materiaService.buscarPorNombreYAanioCursada(nombre, anioCursadaFiltro);
+            List<Materia> materias = materiaService.buscarPorNombreYAanioCursada(nombre, anioCursadaFiltro,
+                    principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             carga(true, model, principal);
@@ -107,7 +108,7 @@ public class InscripcionController {
             return "inscripcion/nueva";
         }
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
         model.addAttribute("listadoMaterias", materias);
 
         carga(true, model, principal);
@@ -124,7 +125,7 @@ public class InscripcionController {
 
         if (nombre.isBlank() && anioCursadaFiltro != null) {
 
-            List<Materia> materias = materiaService.buscarPorAnioCursada(anioCursadaFiltro);
+            List<Materia> materias = materiaService.buscarPorAnioCursada(anioCursadaFiltro, principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             model.addAttribute("inscripcion", ins);
@@ -136,7 +137,7 @@ public class InscripcionController {
 
         if (!nombre.isBlank() && anioCursadaFiltro == null) {
 
-            List<Materia> materias = materiaService.buscarPorNombre(nombre);
+            List<Materia> materias = materiaService.buscarPorNombre(nombre, principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             model.addAttribute("inscripcion", ins);
@@ -148,7 +149,8 @@ public class InscripcionController {
 
         if (!nombre.isBlank() && anioCursadaFiltro != null) {
 
-            List<Materia> materias = materiaService.buscarPorNombreYAanioCursada(nombre, anioCursadaFiltro);
+            List<Materia> materias = materiaService.buscarPorNombreYAanioCursada(nombre, anioCursadaFiltro,
+                    principal.getName());
             model.addAttribute("listadoMaterias", materias);
 
             model.addAttribute("inscripcion", ins);
@@ -158,7 +160,7 @@ public class InscripcionController {
             return "inscripcion/editar";
         }
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
         model.addAttribute("listadoMaterias", materias);
 
         model.addAttribute("inscripcion", ins);
@@ -226,7 +228,7 @@ public class InscripcionController {
     public String mostrarEditar(@PathVariable Long id, Model model, Principal principal) {
 
         Inscripcion inscripcion = inscripcionService.getInscripcionPorId(id);
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
 
         model.addAttribute("inscripcion", inscripcion);
         model.addAttribute("listadoMaterias", materias);
@@ -243,14 +245,14 @@ public class InscripcionController {
 
         if (result.hasErrors()) {
 
-            List<Materia> materias = materiaService.getMaterias();
+            List<Materia> materias = materiaService.getMaterias(principal.getName());
             model.addAttribute("listadoMaterias", materias);
             carga(false, model, principal);
 
             return "inscripcion/editar";
         }
 
-        inscripcionService.actualizarInscripcion(inscripcion, seleccion);
+        inscripcionService.actualizarInscripcion(inscripcion, seleccion, principal);
 
         model.addAttribute("msj", "Se actualizaron los datos de la inscripción.");
 

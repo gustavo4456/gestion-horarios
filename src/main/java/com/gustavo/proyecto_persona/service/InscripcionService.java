@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,8 @@ public class InscripcionService {
         inscripcionRepository.deleteById(id);
     }
 
-    public void guardarInscripcion(Inscripcion inscripcion, List<Long> seleccion) throws EntityNotFoundException {
+    public void guardarInscripcion(Inscripcion inscripcion, List<Long> seleccion, Principal principal)
+            throws EntityNotFoundException {
 
         if (inscripcion.getId() != null) {
             throw new EntityNotFoundException("Para guardar una inscripcion el id debe ser null.");
@@ -75,7 +77,7 @@ public class InscripcionService {
         Inscripcion inscripcionGuardada = inscripcionRepository.save(inscripcion);
 
         for (Long idMateria : seleccion) {
-            Materia mat = materiaService.getMateriaPorId(idMateria);
+            Materia mat = materiaService.getMateriaPorId(idMateria, principal.getName());
 
             inscripcionGuardada.agregarMateria(mat);
         }
@@ -83,7 +85,7 @@ public class InscripcionService {
         inscripcionRepository.save(inscripcionGuardada);
     }
 
-    public void actualizarInscripcion(Inscripcion inscripcion, List<Long> nuevasMateriasIds)
+    public void actualizarInscripcion(Inscripcion inscripcion, List<Long> nuevasMateriasIds, Principal principal)
             throws EntityNotFoundException {
 
         // 1. Validamos que venga el ID
@@ -108,7 +110,7 @@ public class InscripcionService {
         // 🚀 PASO CLAVE 2: Llenar con la nueva lista que mandó el usuario
         if (nuevasMateriasIds != null && !nuevasMateriasIds.isEmpty()) {
             for (Long idMateria : nuevasMateriasIds) {
-                Materia nuevaMat = materiaService.getMateriaPorId(idMateria);
+                Materia nuevaMat = materiaService.getMateriaPorId(idMateria, principal.getName());
                 inscripcionDB.agregarMateria(nuevaMat); // Agregamos la nueva materia usando tu helper
             }
         }

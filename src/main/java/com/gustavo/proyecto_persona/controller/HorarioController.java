@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -35,9 +36,9 @@ public class HorarioController {
     }
 
     @GetMapping("/nuevo")
-    public String mostrarFormNuevoHorario(Model model) {
+    public String mostrarFormNuevoHorario(Model model, Principal principal) {
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
 
         model.addAttribute("horario", new Horario());
         model.addAttribute("materias", materias);
@@ -48,10 +49,11 @@ public class HorarioController {
     }
 
     @PostMapping("/guardar")
-    public String guardarHorario(@Valid @ModelAttribute Horario horario, BindingResult result, Model model) {
+    public String guardarHorario(@Valid @ModelAttribute Horario horario, BindingResult result, Model model,
+            Principal principal) {
 
         if (result.hasErrors()) {
-            List<Materia> materias = materiaService.getMaterias();
+            List<Materia> materias = materiaService.getMaterias(principal.getName());
 
             model.addAttribute("materias", materias);
             model.addAttribute("listaDias", DiasSemana.values());
@@ -116,11 +118,11 @@ public class HorarioController {
     }
 
     @GetMapping("/{id}/editar")
-    public String mostrarFormEditar(@PathVariable Long id, Model model) {
+    public String mostrarFormEditar(@PathVariable Long id, Model model, Principal principal) {
 
         Horario horarioDb = horarioService.getHorarioPorId(id);
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
 
         model.addAttribute("materias", materias);
         model.addAttribute("listaDias", DiasSemana.values());
@@ -132,11 +134,12 @@ public class HorarioController {
     }
 
     @PostMapping("/editar")
-    public String editar(@Valid @ModelAttribute("horarioDb") Horario horario, BindingResult result, Model model) {
+    public String editar(@Valid @ModelAttribute("horarioDb") Horario horario, BindingResult result, Model model,
+            Principal principal) {
 
         if (result.hasErrors()) {
 
-            List<Materia> materias = materiaService.getMaterias();
+            List<Materia> materias = materiaService.getMaterias(principal.getName());
 
             model.addAttribute("materias", materias);
             model.addAttribute("listaDias", DiasSemana.values());

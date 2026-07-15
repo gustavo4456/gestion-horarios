@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,9 @@ public class MateriaController {
     }
 
     @GetMapping("/listado")
-    public String getListadoMaterias(Model model) {
+    public String getListadoMaterias(Model model, Principal principal) {
 
-        List<Materia> materias = materiaService.getMaterias();
+        List<Materia> materias = materiaService.getMaterias(principal.getName());
 
         model.addAttribute("listadoMaterias", materias);
 
@@ -50,7 +51,7 @@ public class MateriaController {
 
     @PostMapping("/guardar")
     public String guardarMateria(@Valid @ModelAttribute("nuevaMateria") Materia materia,
-            BindingResult result, Model model) {
+            BindingResult result, Model model, Principal principal) {
 
         if (result.hasErrors()) {
 
@@ -59,7 +60,7 @@ public class MateriaController {
             return "/materia/form-nueva-materia";
         }
 
-        materiaService.guardarMateria(materia);
+        materiaService.guardarMateria(materia, principal.getName());
 
         model.addAttribute("msj", "La materia se guardo en la bd.");
 
@@ -67,9 +68,9 @@ public class MateriaController {
     }
 
     @GetMapping("/{id}/form-editar")
-    public String mostrarFormEditar(@PathVariable("id") Long idMateria, Model model) {
+    public String mostrarFormEditar(@PathVariable("id") Long idMateria, Model model, Principal principal) {
 
-        Materia materiabd = materiaService.getMateriaPorId(idMateria);
+        Materia materiabd = materiaService.getMateriaPorId(idMateria, principal.getName());
 
         model.addAttribute("tiposMaterias", List.of(TipoMateria.ANUAL, TipoMateria.CUATRIMESTRAL));
         model.addAttribute("materiabd", materiabd);
@@ -79,7 +80,7 @@ public class MateriaController {
 
     @PostMapping("/editar")
     public String editarMaterio(@Valid @ModelAttribute("materiabd") Materia materia, BindingResult result,
-            Model model) {
+            Model model, Principal principal) {
 
         if (result.hasErrors()) {
 
@@ -89,16 +90,17 @@ public class MateriaController {
             return "materia/form-editar-materia";
         }
 
+        materiaService.actualizarMateria(materia, principal.getName());
+
         model.addAttribute("msj", "Se actualizaron los datos de la materia correctamente.");
 
-        materiaService.actualizarMateria(materia);
         return "mensaje";
     }
 
     @GetMapping("/{id}/eliminar")
-    public String eliminarMateria(@PathVariable("id") Long idMateria, Model model) {
+    public String eliminarMateria(@PathVariable("id") Long idMateria, Model model, Principal principal) {
 
-        materiaService.borrarMateria(idMateria);
+        materiaService.borrarMateria(idMateria, principal.getName());
 
         model.addAttribute("msj", "La materia fue eliminada de la bd");
 
@@ -111,9 +113,9 @@ public class MateriaController {
     }
 
     @GetMapping("/buscando")
-    public String buscarMateriaPorId(@RequestParam("id") Long id, Model model) {
+    public String buscarMateriaPorId(@RequestParam("id") Long id, Model model, Principal principal) {
 
-        Materia materia = materiaService.getMateriaPorId(id);
+        Materia materia = materiaService.getMateriaPorId(id, principal.getName());
 
         model.addAttribute("materia", materia);
 
