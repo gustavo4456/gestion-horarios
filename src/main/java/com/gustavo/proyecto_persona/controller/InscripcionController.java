@@ -1,5 +1,7 @@
 package com.gustavo.proyecto_persona.controller;
 
+import java.security.Principal;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -40,26 +42,26 @@ public class InscripcionController {
     }
 
     @GetMapping("/nueva")
-    public String mostrarFormNuevaInscripcio(Model model) {
+    public String mostrarFormNuevaInscripcio(Model model, Principal principal) {
 
         List<Materia> materias = materiaService.getMaterias();
         model.addAttribute("listadoMaterias", materias);
 
-        carga(true, model);
+        carga(true, model, principal);
 
         return "inscripcion/nueva";
     }
 
     @PostMapping("/guardar")
     public String guardarInscripcio(@Valid @ModelAttribute Inscripcion inscripcion, BindingResult result,
-            @RequestParam(required = false) List<Long> seleccion, Model model) {
+            @RequestParam(required = false) List<Long> seleccion, Model model, Principal principal) {
 
         if (result.hasErrors()) {
 
             List<Materia> materias = materiaService.getMaterias();
             model.addAttribute("listadoMaterias", materias);
 
-            carga(false, model);
+            carga(false, model, principal);
 
             return "inscripcion/nueva";
         }
@@ -73,14 +75,14 @@ public class InscripcionController {
 
     @GetMapping("/filtro-materia")
     public String filtrar(@RequestParam(required = false) String nombre,
-            @RequestParam(required = false) Integer anioCursadaFiltro, Model model) {
+            @RequestParam(required = false) Integer anioCursadaFiltro, Model model, Principal principal) {
 
         if (nombre.isBlank() && anioCursadaFiltro != null) {
 
             List<Materia> materias = materiaService.buscarPorAnioCursada(anioCursadaFiltro);
             model.addAttribute("listadoMaterias", materias);
 
-            carga(true, model);
+            carga(true, model, principal);
 
             return "inscripcion/nueva";
         }
@@ -90,7 +92,7 @@ public class InscripcionController {
             List<Materia> materias = materiaService.buscarPorNombre(nombre);
             model.addAttribute("listadoMaterias", materias);
 
-            carga(true, model);
+            carga(true, model, principal);
 
             return "inscripcion/nueva";
         }
@@ -100,7 +102,7 @@ public class InscripcionController {
             List<Materia> materias = materiaService.buscarPorNombreYAanioCursada(nombre, anioCursadaFiltro);
             model.addAttribute("listadoMaterias", materias);
 
-            carga(true, model);
+            carga(true, model, principal);
 
             return "inscripcion/nueva";
         }
@@ -108,14 +110,15 @@ public class InscripcionController {
         List<Materia> materias = materiaService.getMaterias();
         model.addAttribute("listadoMaterias", materias);
 
-        carga(true, model);
+        carga(true, model, principal);
 
         return "inscripcion/nueva";
     }
 
     @GetMapping("/filtro-materia-editar")
     public String filtrarEditar(@RequestParam(required = false) String nombre,
-            @RequestParam(required = false) Integer anioCursadaFiltro, @RequestParam Long idFiltro, Model model) {
+            @RequestParam(required = false) Integer anioCursadaFiltro, @RequestParam Long idFiltro, Model model,
+            Principal principal) {
 
         Inscripcion ins = inscripcionService.getInscripcionPorId(idFiltro);
 
@@ -126,7 +129,7 @@ public class InscripcionController {
 
             model.addAttribute("inscripcion", ins);
 
-            carga(false, model);
+            carga(false, model, principal);
 
             return "inscripcion/editar";
         }
@@ -138,7 +141,7 @@ public class InscripcionController {
 
             model.addAttribute("inscripcion", ins);
 
-            carga(false, model);
+            carga(false, model, principal);
 
             return "inscripcion/editar";
         }
@@ -150,7 +153,7 @@ public class InscripcionController {
 
             model.addAttribute("inscripcion", ins);
 
-            carga(false, model);
+            carga(false, model, principal);
 
             return "inscripcion/editar";
         }
@@ -160,16 +163,16 @@ public class InscripcionController {
 
         model.addAttribute("inscripcion", ins);
 
-        carga(false, model);
+        carga(false, model, principal);
 
         return "inscripcion/editar";
     }
 
     @GetMapping("/listado")
-    public String mostrarListado(Model model) {
+    public String mostrarListado(Model model, Principal principal) {
 
         List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
-        List<Perfil> personas = perfilService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas(principal.getName());
 
         model.addAttribute("personas", personas);
 
@@ -181,7 +184,7 @@ public class InscripcionController {
     @GetMapping("/filtro-inscripciones")
     public String filtroListado(@RequestParam(name = "persona", required = false) Long idPersona,
             @RequestParam(required = false) Integer anioLectivo,
-            Model model) {
+            Model model, Principal principal) {
 
         if (idPersona == null && anioLectivo != null) {
             List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorAnioLectivo(anioLectivo);
@@ -202,7 +205,7 @@ public class InscripcionController {
             model.addAttribute("inscripciones", inscripciones);
         }
 
-        List<Perfil> personas = perfilService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas(principal.getName());
 
         model.addAttribute("personas", personas);
 
@@ -220,7 +223,7 @@ public class InscripcionController {
     }
 
     @GetMapping("/{id}/editar")
-    public String mostrarEditar(@PathVariable Long id, Model model) {
+    public String mostrarEditar(@PathVariable Long id, Model model, Principal principal) {
 
         Inscripcion inscripcion = inscripcionService.getInscripcionPorId(id);
         List<Materia> materias = materiaService.getMaterias();
@@ -228,7 +231,7 @@ public class InscripcionController {
         model.addAttribute("inscripcion", inscripcion);
         model.addAttribute("listadoMaterias", materias);
 
-        carga(false, model);
+        carga(false, model, principal);
 
         return "inscripcion/editar";
     }
@@ -236,13 +239,13 @@ public class InscripcionController {
     @PostMapping("/editar")
     public String editar(@Valid @ModelAttribute Inscripcion inscripcion,
             @RequestParam(required = false) List<Long> seleccion,
-            BindingResult result, Model model) {
+            BindingResult result, Model model, Principal principal) {
 
         if (result.hasErrors()) {
 
             List<Materia> materias = materiaService.getMaterias();
             model.addAttribute("listadoMaterias", materias);
-            carga(false, model);
+            carga(false, model, principal);
 
             return "inscripcion/editar";
         }
@@ -255,13 +258,13 @@ public class InscripcionController {
     }
 
     // Metodos de soporte
-    private void carga(boolean conInscripcion, Model model) {
+    private void carga(boolean conInscripcion, Model model, Principal principal) {
 
         if (conInscripcion) {
             model.addAttribute("inscripcion", new Inscripcion());
         }
 
-        List<Perfil> personas = perfilService.getPersonas();
+        List<Perfil> personas = perfilService.getPersonas(principal.getName());
         model.addAttribute("personas", personas);
 
         model.addAttribute("aniosLectivo",

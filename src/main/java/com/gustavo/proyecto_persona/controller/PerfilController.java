@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -31,16 +32,15 @@ public class PerfilController {
     }
 
     @GetMapping("/listado")
-    public String getListadoDePersonas(Model model) {
+    public String getListadoDePersonas(Model model, Principal principal) {
 
-        List<Perfil> perfiles = perfilService.getPersonas();
+        List<Perfil> perfiles = perfilService.getPersonas(principal.getName());
         int cantidadPersonas = perfiles.size();
 
         model.addAttribute("listadoPersonas", perfiles);
         model.addAttribute("cantidadPersonas", cantidadPersonas);
 
         return "/perfil/listado-personas";
-
     }
 
     @GetMapping("/nueva")
@@ -52,8 +52,10 @@ public class PerfilController {
     }
 
     @PostMapping("/guardar")
-    public String postGuardarPersona(@Valid @ModelAttribute("persona") PerfilAGuardarDto persona, BindingResult result,
-            Model model) {
+    public String postGuardarPersona(@Valid @ModelAttribute("persona") PerfilAGuardarDto persona,
+            BindingResult result,
+            Model model,
+            Principal principal) {
 
         if (result.hasErrors()) {
             return "/perfil/form-nueva-persona";
@@ -61,7 +63,8 @@ public class PerfilController {
 
         model.addAttribute("msj", "Persona Guardada con exito.");
 
-        perfilService.guardarPersona(persona);
+        // Guardamos pasándole el username de la sesión
+        perfilService.guardarPersona(persona, principal.getName());
 
         return "mensaje";
     }
@@ -72,9 +75,12 @@ public class PerfilController {
     }
 
     @GetMapping("/buscando")
-    public String getBuscadoPorIdString(@RequestParam("idBusqueda") Long id, Model model) {
+    public String getBuscadoPorIdString(@RequestParam("idBusqueda") Long id,
+            Model model,
+            Principal principal) {
 
-        Perfil persona = perfilService.getPersonaPorId(id);
+        // Buscamos asegurando que pertenezca al usuario de la sesión
+        Perfil persona = perfilService.getPersonaPorId(id, principal.getName());
 
         model.addAttribute("persona", persona);
 
@@ -82,9 +88,12 @@ public class PerfilController {
     }
 
     @GetMapping("/{id}/eliminar")
-    public String eliminarPersona(@PathVariable("id") Long id, Model model) {
+    public String eliminarPersona(@PathVariable("id") Long id,
+            Model model,
+            Principal principal) {
 
-        perfilService.borrarPersona(id);
+        // Borrado seguro que valida pertenencia antes de eliminar
+        perfilService.borrarPersona(id, principal.getName());
 
         model.addAttribute("msj", "Usuario Eliminado.");
 
@@ -92,9 +101,12 @@ public class PerfilController {
     }
 
     @GetMapping("/{id}/form-editar")
-    public String mostrarFormEditar(@PathVariable("id") Long idPersona, Model model) {
+    public String mostrarFormEditar(@PathVariable("id") Long idPersona,
+            Model model,
+            Principal principal) {
 
-        Perfil perfil = perfilService.getPersonaPorId(idPersona);
+        // Nos aseguramos que el perfil a editar sea del usuario activo
+        Perfil perfil = perfilService.getPersonaPorId(idPersona, principal.getName());
 
         PerfilAEditarDto perfilAEditar = new PerfilAEditarDto();
         perfilAEditar.setId(perfil.getId());
@@ -106,14 +118,17 @@ public class PerfilController {
     }
 
     @PostMapping("/editar")
-    public String postEditarPersona(@Valid @ModelAttribute("persona") PerfilAEditarDto persona, BindingResult result,
-            Model model) {
+    public String postEditarPersona(@Valid @ModelAttribute("persona") PerfilAEditarDto persona,
+            BindingResult result,
+            Model model,
+            Principal principal) {
 
         if (result.hasErrors()) {
             return "/perfil/form-editar-persona";
         }
 
-        perfilService.actualizarPersona(persona);
+        // Actualizamos validando que sea el dueño
+        perfilService.actualizarPersona(persona, principal.getName());
 
         model.addAttribute("msj", "Los Datos de la Persona fueron actualizados.");
 
