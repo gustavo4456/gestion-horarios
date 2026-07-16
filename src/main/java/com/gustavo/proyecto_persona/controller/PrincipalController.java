@@ -51,7 +51,7 @@ public class PrincipalController {
                         Principal principal) {
 
                 List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersonaYAnioLectivo(persona,
-                                anioLectivo);
+                                anioLectivo, principal.getName());
 
                 Map<Integer, List<HorarioDto>> horariosPorAnio = inscripciones.stream()
                                 .flatMap(inscripcion -> inscripcion.getMaterias().stream())

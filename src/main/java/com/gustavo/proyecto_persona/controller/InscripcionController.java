@@ -66,7 +66,7 @@ public class InscripcionController {
             return "inscripcion/nueva";
         }
 
-        inscripcionService.guardarInscripcion(inscripcion, seleccion, principal);
+        inscripcionService.guardarInscripcion(inscripcion, seleccion, principal.getName());
 
         model.addAttribute("msj", "Se guardo la inscripción en la BD.");
 
@@ -121,7 +121,7 @@ public class InscripcionController {
             @RequestParam(required = false) Integer anioCursadaFiltro, @RequestParam Long idFiltro, Model model,
             Principal principal) {
 
-        Inscripcion ins = inscripcionService.getInscripcionPorId(idFiltro);
+        Inscripcion ins = inscripcionService.getInscripcionPorId(idFiltro, principal.getName());
 
         if (nombre.isBlank() && anioCursadaFiltro != null) {
 
@@ -173,7 +173,7 @@ public class InscripcionController {
     @GetMapping("/listado")
     public String mostrarListado(Model model, Principal principal) {
 
-        List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
+        List<Inscripcion> inscripciones = inscripcionService.getInscripciones(principal.getName());
         List<Perfil> personas = perfilService.getPersonas(principal.getName());
 
         model.addAttribute("personas", personas);
@@ -189,20 +189,22 @@ public class InscripcionController {
             Model model, Principal principal) {
 
         if (idPersona == null && anioLectivo != null) {
-            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorAnioLectivo(anioLectivo);
+            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorAnioLectivo(anioLectivo,
+                    principal.getName());
 
             model.addAttribute("inscripciones", inscripciones);
         } else if (idPersona != null && anioLectivo == null) {
-            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersona(idPersona);
+            List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersona(idPersona,
+                    principal.getName());
 
             model.addAttribute("inscripciones", inscripciones);
         } else if (idPersona != null && anioLectivo != null) {
             List<Inscripcion> inscripciones = inscripcionService.getInscripcionesPorPersonaYAnioLectivo(idPersona,
-                    anioLectivo);
+                    anioLectivo, principal.getName());
 
             model.addAttribute("inscripciones", inscripciones);
         } else {
-            List<Inscripcion> inscripciones = inscripcionService.getInscripciones();
+            List<Inscripcion> inscripciones = inscripcionService.getInscripciones(principal.getName());
 
             model.addAttribute("inscripciones", inscripciones);
         }
@@ -215,9 +217,9 @@ public class InscripcionController {
     }
 
     @GetMapping("/{id}/eliminar")
-    public String eliminar(@PathVariable Long id, Model model) {
+    public String eliminar(@PathVariable Long id, Model model, Principal principal) {
 
-        inscripcionService.borrarInscripcion(id);
+        inscripcionService.borrarInscripcion(id, principal.getName());
 
         model.addAttribute("msj", "Se ha eliminado la inscripción.");
 
@@ -227,7 +229,7 @@ public class InscripcionController {
     @GetMapping("/{id}/editar")
     public String mostrarEditar(@PathVariable Long id, Model model, Principal principal) {
 
-        Inscripcion inscripcion = inscripcionService.getInscripcionPorId(id);
+        Inscripcion inscripcion = inscripcionService.getInscripcionPorId(id, principal.getName());
         List<Materia> materias = materiaService.getMaterias(principal.getName());
 
         model.addAttribute("inscripcion", inscripcion);
@@ -252,7 +254,7 @@ public class InscripcionController {
             return "inscripcion/editar";
         }
 
-        inscripcionService.actualizarInscripcion(inscripcion, seleccion, principal);
+        inscripcionService.actualizarInscripcion(inscripcion, seleccion, principal.getName());
 
         model.addAttribute("msj", "Se actualizaron los datos de la inscripción.");
 

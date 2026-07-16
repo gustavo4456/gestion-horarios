@@ -15,7 +15,7 @@
 
     <form th:action="@{/filtro-horarios}" method="get">
 
-        <label for="persona">Personas:</label>
+        <label for="persona">Perfil:</label>
         <select name="persona">
             <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
         </select>
