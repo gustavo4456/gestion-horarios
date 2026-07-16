@@ -62,9 +62,11 @@ public class HorarioController {
             return "/horario/form-nuevo-horario";
         }
 
-        horarioService.guardarHorario(horario);
+        // Guardamos de forma segura pasándole el username
+        horarioService.guardarHorario(horario, principal.getName());
 
-        Horario horarioBD = horarioService.getHorarioPorId(horario.getId());
+        // Recuperamos el horario con validación de dueño para la pantalla de éxito
+        Horario horarioBD = horarioService.getHorarioPorId(horario.getId(), principal.getName());
 
         model.addAttribute("horarioBD", horarioBD);
 
@@ -72,9 +74,9 @@ public class HorarioController {
     }
 
     @GetMapping("/listado")
-    public String mostrarFormularioHorarios(Model model) {
+    public String mostrarFormularioHorarios(Model model, Principal principal) {
 
-        List<Horario> horarios = horarioService.getHorarios();
+        List<Horario> horarios = horarioService.getHorarios(principal.getName());
 
         model.addAttribute("horarios", horarios);
 
@@ -82,9 +84,9 @@ public class HorarioController {
     }
 
     @GetMapping("/filtro")
-    public String filtro(@RequestParam("filtro") Long anioCursada, Model model) {
+    public String filtro(@RequestParam("filtro") Long anioCursada, Model model, Principal principal) {
 
-        List<Horario> horarios = horarioService.getHorariosPorAnioCursada(anioCursada);
+        List<Horario> horarios = horarioService.getHorariosPorAnioCursada(anioCursada, principal.getName());
 
         model.addAttribute("horarios", horarios);
         model.addAttribute("anioCursada", anioCursada);
@@ -99,18 +101,18 @@ public class HorarioController {
     }
 
     @GetMapping("/buscando")
-    public String busqueda(@RequestParam Long id, Model model) {
+    public String busqueda(@RequestParam Long id, Model model, Principal principal) {
 
-        Horario horario = horarioService.getHorarioPorId(id);
+        Horario horario = horarioService.getHorarioPorId(id, principal.getName());
         model.addAttribute("horario", horario);
 
         return "horario/resultado-busqueda";
     }
 
     @GetMapping("/{id}/eliminar")
-    public String eliminar(@PathVariable Long id, Model model) {
+    public String eliminar(@PathVariable Long id, Model model, Principal principal) {
 
-        horarioService.borrarHorario(id);
+        horarioService.borrarHorario(id, principal.getName());
 
         model.addAttribute("msj", "Se elimino el horario de la bd.");
 
@@ -120,7 +122,7 @@ public class HorarioController {
     @GetMapping("/{id}/editar")
     public String mostrarFormEditar(@PathVariable Long id, Model model, Principal principal) {
 
-        Horario horarioDb = horarioService.getHorarioPorId(id);
+        Horario horarioDb = horarioService.getHorarioPorId(id, principal.getName());
 
         List<Materia> materias = materiaService.getMaterias(principal.getName());
 
@@ -150,7 +152,7 @@ public class HorarioController {
 
         model.addAttribute("msj", "Se actualizaron los datos del horario.");
 
-        horarioService.actualizarHorario(horario);
+        horarioService.actualizarHorario(horario, principal.getName());
 
         return "mensaje";
     }
