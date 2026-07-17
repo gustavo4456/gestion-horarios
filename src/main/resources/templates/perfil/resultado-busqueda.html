@@ -4,26 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Resultado busqueda</title>
+    <title>Resultado de la Búsqueda - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para mantener el footer abajo -->
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Resutlado:</h2>
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
 
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-6 col-lg-5">
 
+                <!-- Tarjeta de Resultado -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" th:object="${persona}">
 
-    <div th:object="${persona}">
-        <h3>Id: </h3>
-        <p th:text="*{id}">0</p>
-        <h3>Nombre: </h3>
-        <p th:text="*{nombre}">nombre</p>
+                    <!-- Encabezado de la Tarjeta con ícono de perfil -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-person-check-fill fs-3"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Perfil Encontrado</h4>
+                        <small class="text-secondary">Ficha de registro individual</small>
+                    </div>
 
-        <a th:href="@{/perfil/{id}/eliminar(id=*{id})}">Eliminar</a>
-    </div>
+                    <!-- Cuerpo con los datos organizados en filas limpias -->
+                    <div class="card-body p-4 bg-white">
 
+                        <!-- ID del Perfil -->
+                        <div class="d-flex align-items-center mb-3 pb-3 border-b-custom border-bottom">
+                            <div class="bg-light rounded p-2 text-muted me-3">
+                                <i class="bi bi-key-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="d-block small text-uppercase text-muted fw-bold">ID Identificador</span>
+                                <span class="fs-5 fw-bold text-dark" th:text="*{id}">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Nombre del Perfil -->
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-light rounded p-2 text-muted me-3">
+                                <i class="bi bi-fonts fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="d-block small text-uppercase text-muted fw-bold">Nombre Completo</span>
+                                <span class="fs-5 text-dark" th:text="*{nombre}">Nombre completo</span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 opacity-25">
+
+                        <!-- Acciones y Botones -->
+                        <div class="d-grid gap-2">
+                            <!-- Botón de Eliminar (Peligro) -->
+                            <a th:href="@{/perfil/{id}/eliminar(id=*{id})}"
+                                class="btn btn-danger rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-trash3-fill"></i> Eliminar este perfil
+                            </a>
+
+                            <!-- Enlaces de navegación secundarios -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-6">
+                                    <a th:href="@{/perfil/buscar}"
+                                        class="btn btn-outline-secondary btn-sm w-100 rounded-pill">
+                                        <i class="bi bi-search"></i> Nueva búsqueda
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a th:href="@{/perfil/listado}"
+                                        class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                                        <i class="bi bi-list-ul"></i> Ver listado
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

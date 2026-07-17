@@ -4,57 +4,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Listado de Inscripciones</title>
+    <title>Listado de Inscripciones - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para asegurar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
+    <!-- Contenedor Principal -->
+    <main class="container my-5 flex-grow-1">
 
-    <h2>Buscar Inscripción</h2>
+        <!-- Tarjeta de Control Superior: Título + Herramientas de Filtro -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-center g-3">
 
-    <form th:action="@{/inscripcion/filtro-inscripciones}" method="get">
+                    <!-- Información Izquierda -->
+                    <div class="col-xl-4 text-center text-xl-start">
+                        <h2 class="fw-bold text-dark mb-1">
+                            <i class="bi bi-journal-check text-primary me-2"></i>Inscripciones Históricas
+                        </h2>
+                        <p class="text-muted mb-0 small">
+                            Consultá y gestioná las altas de alumnos por ciclo lectivo
+                        </p>
+                    </div>
 
-        <label for="persona">Perfiles:</label>
-        <select name="persona">
-            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
-        </select>
+                    <!-- Formulario de Filtro Integrado a la derecha -->
+                    <div class="col-xl-8">
+                        <form th:action="@{/inscripcion/filtro-inscripciones}" method="get"
+                            class="row g-2 justify-content-xl-end align-items-center">
 
-        <label for="anioLectivo">Año Lectivo:</label>
-        <input type="number" name="anioLectivo" id="anioLectivo">
+                            <!-- Combo Perfiles -->
+                            <div class="col-sm-6 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-secondary border-end-0">
+                                        <i class="bi bi-person-badge"></i>
+                                    </span>
+                                    <select name="persona" class="form-select ps-2" aria-label="Filtrar por perfil">
+                                        <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
 
-        <input type="submit" value="Buscar">
-    </form>
+                            <!-- Input Año Lectivo -->
+                            <div class="col-sm-4 col-md-4">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light text-secondary border-end-0">
+                                        <i class="bi bi-calendar3"></i>
+                                    </span>
+                                    <input type="number" name="anioLectivo" id="anioLectivo" class="form-control ps-2"
+                                        placeholder="Año Lectivo (Ej: 2026)" min="1900" max="2100">
+                                </div>
+                            </div>
 
-    <h2>Listado de Inscripciones</h2>
+                            <!-- Botón de Envío -->
+                            <div class="col-sm-2 col-md-3 d-grid">
+                                <button type="submit" class="btn btn-primary btn-sm rounded-pill fw-bold shadow-sm">
+                                    <i class="bi bi-search me-1"></i> Buscar
+                                </button>
+                            </div>
 
+                        </form>
+                    </div>
 
+                </div>
+            </div>
+        </div>
 
-    <table border="1">
+        <!-- Tarjeta de la Tabla Principal -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-0">
 
-        <thead>
-            <th>ID</th>
-            <th>Perfil</th>
-            <th>Año lectivo</th>
-            <th>Materias</th>
-            <th>Opciones</th>
-        </thead>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead class="table-dark text-uppercase small" style="letter-spacing: 0.5px;">
+                            <tr>
+                                <th class="ps-4" style="width: 10%;">ID</th>
+                                <th style="width: 45%;">Perfil / Alumno</th>
+                                <th style="width: 15%;">Año Lectivo</th>
+                                <th style="width: 15%;">Materias Inscriptas</th>
+                                <th class="text-end pe-4" style="width: 15%;">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iteración corregida asignando el th:each en la fila tr -->
+                            <tr th:each="i : ${inscripciones}">
+                                <td class="ps-4 fw-semibold text-muted" th:text="${i.id}">ID</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width: 32px; height: 32px;">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                        <span class="fw-bold text-dark" th:text="${i.perfil.nombre}">Nombre</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="fw-semibold text-secondary" th:text="${i.anioLectivo}">Año
+                                        lectivo</span>
+                                </td>
+                                <td>
+                                    <!-- Badge dinámico para la cantidad de asignaturas -->
+                                    <span
+                                        class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-15 px-3 py-2 rounded-pill fw-bold">
+                                        <i class="bi bi-book me-1"></i>
+                                        <span th:text="${i.materias.size}">0</span> asignadas
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <!-- Botones de Acción -->
+                                    <div class="btn-group btn-group-sm shadow-sm rounded-pill overflow-hidden"
+                                        role="group">
+                                        <a th:href="@{/inscripcion/{id}/editar(id=${i.id})}"
+                                            class="btn btn-warning text-dark px-3" title="Editar inscripción">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a th:href="@{/inscripcion/{id}/eliminar(id=${i.id})}"
+                                            class="btn btn-danger px-3" title="Eliminar inscripción"
+                                            onclick="return confirm('¿Estás seguro de que querés dar de baja esta inscripción por completo?');">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
 
-        <tbody th:each="i : ${inscripciones}">
-            <td th:text="${i.id}">ID</td>
-            <td th:text="${i.perfil.nombre}">Nombre</td>
-            <td th:text="${i.anioLectivo}">Año lectivo</td>
-            <td th:text="${i.materias.size}">Materias</td>
-            <td>
-                <a th:href="@{/inscripcion/{id}/editar(id=${i.id})}">Editar</a>
-                <a th:href="@{/inscripcion/{id}/eliminar(id=${i.id})}">Eliminar</a>
-            </td>
-        </tbody>
+                            <!-- Estado Desierto por si la búsqueda no arroja coincidencias -->
+                            <tr th:if="${inscripciones.isEmpty()}">
+                                <td colspan="5" class="text-center py-5 bg-white">
+                                    <i class="bi bi-folder-x text-muted display-4 d-block mb-3"></i>
+                                    <h5 class="text-secondary fw-semibold">No se encontraron inscripciones</h5>
+                                    <p class="text-muted small mb-0">Probá modificando el año lectivo o el perfil
+                                        seleccionado en el buscador.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    </table>
+            </div>
+        </div>
 
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

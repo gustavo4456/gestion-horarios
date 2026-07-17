@@ -4,23 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Crear Perfil</title>
+    <title>Crear Perfil - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para mantener el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <form th:action="@{/perfil/guardar}" th:object="${persona}" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" th:field="*{nombre}" id="nombre">
-        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;">
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
 
-        </span>
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-6 col-lg-5">
 
-        <button type="submit">Guardar</button>
-    </form>
+                <!-- Tarjeta del Formulario -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                    <!-- Encabezado con ícono de agregar -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-person-plus-fill fs-4"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Nuevo Perfil</h4>
+                        <small class="text-secondary">Registrá una nueva persona en el sistema</small>
+                    </div>
+
+                    <!-- Cuerpo del Formulario -->
+                    <div class="card-body p-4 bg-white">
+                        <form th:action="@{/perfil/guardar}" th:object="${persona}" method="post">
+
+                            <!-- Campo Nombre -->
+                            <div class="mb-4">
+                                <label for="nombre" class="form-label fw-semibold text-muted">Nombre Completo</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light text-secondary border-end-0">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <!-- ⚡ th:classappend pinta el borde rojo dinámicamente si hay errores de validación -->
+                                    <input type="text" th:field="*{nombre}" id="nombre" class="form-control ps-2"
+                                        th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''"
+                                        placeholder="Ej: Juan Pérez" required>
+
+                                    <!-- ⚡ Mensaje de error integrado nativamente con Bootstrap -->
+                                    <div class="invalid-feedback text-start" th:if="${#fields.hasErrors('nombre')}"
+                                        th:errors="*{nombre}">
+                                        Error en el nombre
+                                    </div>
+                                </div>
+                                <div class="form-text text-muted mt-2 small">
+                                    Ingresá nombre y apellido completos para las actas oficiales.
+                                </div>
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit"
+                                    class="btn btn-success rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-cloud-check-fill"></i> Guardar Registro
+                                </button>
+                                <a th:href="@{/perfil/listado}"
+                                    class="btn btn-link btn-sm text-secondary rounded-pill text-decoration-none">
+                                    Cancelar y volver
+                                </a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

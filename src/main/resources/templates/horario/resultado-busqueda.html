@@ -4,35 +4,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Resultado horario</title>
+    <title>Detalle de Horario - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para asegurar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Resultado horario</h2>
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
 
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-7 col-lg-5">
 
-    <div th:object="${horario}">
+                <!-- Tarjeta de Detalle del Registro Encontrado -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" th:object="${horario}">
 
-        <h3>Materia:</h3>
-        <p th:text="*{materia.nombre}"></p>
+                    <!-- Encabezado de la Ficha -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-card-text fs-4"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Horario Localizado</h4>
+                        <small class="text-secondary" th:text="'Registro de Sistema ID #' + *{id}">ID del
+                            registro</small>
+                    </div>
 
-        <h3>Tipo:</h3>
-        <p th:text="*{tipoMateria}"></p>
+                    <!-- Cuerpo: Bloques de Información -->
+                    <div class="card-body p-4 bg-white">
 
-        <h3>Día:</h3>
-        <p th:text="*{diasSemana}"></p>
+                        <!-- Bloque 1: Materia Principal -->
+                        <div
+                            class="mb-4 text-center text-sm-start bg-light p-3 rounded-3 border-start border-primary border-3">
+                            <span class="text-uppercase text-muted fw-bold small d-block mb-1"
+                                style="letter-spacing: 0.5px;">Materia / Asignatura</span>
+                            <h5 class="fw-bold text-dark mb-0" th:text="*{materia.nombre}">Nombre Materia</h5>
+                        </div>
 
-        <h3>Hora:</h3>
-        <p th:text="*{horaInicio} + ' - ' + *{horaFin}"></p>
+                        <!-- Grilla de Detalles Secundarios -->
+                        <div class="row g-3 mb-4">
+                            <!-- Detalle: Tipo -->
+                            <div class="col-sm-6">
+                                <div class="p-3 border rounded-3 bg-white h-100">
+                                    <span class="text-muted small d-block mb-1 fw-semibold">Régimen / Tipo</span>
+                                    <span
+                                        class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-2 py-1.5 rounded text-uppercase fw-bold small"
+                                        th:text="*{tipoMateria}">
+                                        Tipo
+                                    </span>
+                                </div>
+                            </div>
 
-        <a th:href="@{/horario/{id}/editar(id=*{id})}">Editar</a>
-        <a th:href="@{/horario/{id}/eliminar(id=*{id})}">Eliminar</a>
-    </div>
+                            <!-- Detalle: Día -->
+                            <div class="col-sm-6">
+                                <div class="p-3 border rounded-3 bg-white h-100">
+                                    <span class="text-muted small d-block mb-1 fw-semibold">Día de Cursada</span>
+                                    <span class="text-dark fw-bold small">
+                                        <i class="bi bi-calendar-event text-primary me-1"></i>
+                                        <span th:text="*{diasSemana}">Día</span>
+                                    </span>
+                                </div>
+                            </div>
 
+                            <!-- Detalle: Horario -->
+                            <div class="col-12">
+                                <div
+                                    class="p-3 border rounded-3 bg-white d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="text-muted small d-block mb-1 fw-semibold">Franja Horaria
+                                            Asignada</span>
+                                        <span class="text-secondary small">Duración estimada de la comisión</span>
+                                    </div>
+                                    <span class="badge bg-dark px-3 py-2 rounded-pill fw-semibold font-monospace fs-6">
+                                        <i class="bi bi-clock text-warning me-1"></i>
+                                        <span th:text="*{horaInicio} + ' - ' + *{horaFin}">00:00 - 00:00</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Panel de Acciones de Gestión -->
+                        <div class="border-top pt-3">
+                            <div class="row g-2">
+                                <!-- Botón Modificar (Warning) -->
+                                <div class="col-6">
+                                    <a th:href="@{/horario/{id}/editar(id=*{id})}"
+                                        class="btn btn-warning text-dark w-100 rounded-pill fw-bold btn-sm py-2 shadow-sm d-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-pencil-fill"></i> Editar
+                                    </a>
+                                </div>
+                                <!-- Botón Eliminar (Danger) -->
+                                <div class="col-6">
+                                    <a th:href="@{/horario/{id}/eliminar(id=*{id})}"
+                                        class="btn btn-danger w-100 rounded-pill fw-bold btn-sm py-2 shadow-sm d-flex align-items-center justify-content-center gap-1"
+                                        onclick="return confirm('¿Estás completamente seguro de que querés borrar este horario?');">
+                                        <i class="bi bi-trash3-fill"></i> Eliminar
+                                    </a>
+                                </div>
+                                <!-- Salida limpia -->
+                                <div class="col-12 text-center mt-2">
+                                    <a th:href="@{/horario/buscar}"
+                                        class="btn btn-link btn-sm text-secondary text-decoration-none">
+                                        <i class="bi bi-arrow-left"></i> Realizar otra búsqueda
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- /card -->
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

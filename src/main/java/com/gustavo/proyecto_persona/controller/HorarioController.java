@@ -69,6 +69,7 @@ public class HorarioController {
         Horario horarioBD = horarioService.getHorarioPorId(horario.getId(), principal.getName());
 
         model.addAttribute("horarioBD", horarioBD);
+        model.addAttribute("urlRetorno", "/horario/listado");
 
         return "horario/resultado-guardar";
     }
@@ -115,6 +116,7 @@ public class HorarioController {
         horarioService.borrarHorario(id, principal.getName());
 
         model.addAttribute("msj", "Se elimino el horario de la bd.");
+        model.addAttribute("urlRetorno", "/horario/listado");
 
         return "mensaje";
     }
@@ -151,6 +153,7 @@ public class HorarioController {
         }
 
         model.addAttribute("msj", "Se actualizaron los datos del horario.");
+        model.addAttribute("urlRetorno", "/horario/listado");
 
         horarioService.actualizarHorario(horario, principal.getName());
 

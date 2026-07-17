@@ -63,6 +63,7 @@ public class MateriaController {
         materiaService.guardarMateria(materia, principal.getName());
 
         model.addAttribute("msj", "La materia se guardo en la bd.");
+        model.addAttribute("urlRetorno", "/materia/listado");
 
         return "mensaje";
     }
@@ -93,6 +94,7 @@ public class MateriaController {
         materiaService.actualizarMateria(materia, principal.getName());
 
         model.addAttribute("msj", "Se actualizaron los datos de la materia correctamente.");
+        model.addAttribute("urlRetorno", "/materia/listado");
 
         return "mensaje";
     }
@@ -103,6 +105,7 @@ public class MateriaController {
         materiaService.borrarMateria(idMateria, principal.getName());
 
         model.addAttribute("msj", "La materia fue eliminada de la bd");
+        model.addAttribute("urlRetorno", "/materia/listado");
 
         return "mensaje";
     }

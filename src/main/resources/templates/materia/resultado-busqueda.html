@@ -4,30 +4,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Resultado de la Busqueda</title>
+    <title>Resultado de la Búsqueda - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para clavar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Resultado de busqueda de materia</h2>
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
 
-    <div th:object="${materia}">
-        <h3>Id: </h3>
-        <p th:text="*{id}">0</p>
-        <h3>Nombre: </h3>
-        <p th:text="*{nombre}">nombre</p>
-        <h3>Año de cursada: </h3>
-        <p th:text="*{anioCursada}">año de cursada</p>
-        <h3>Tipo de materia: </h3>
-        <p th:text="*{tipoMateria}">tipo de materia</p>
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-6 col-lg-5">
 
-        <a th:href="@{/materia/{id}/eliminar(id=*{id})}">Eliminar</a>
-    </div>
+                <!-- Tarjeta de Ficha de la Materia -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" th:object="${materia}">
 
+                    <!-- Encabezado de la Ficha -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-file-earmark-check fs-4"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Materia Encontrada</h4>
+                        <small class="text-secondary">Información almacenada en el sistema</small>
+                    </div>
 
+                    <!-- Cuerpo: Lista de Atributos alineados -->
+                    <div class="card-body p-4 bg-white">
+                        <ul class="list-group list-group-flush mb-4">
+
+                            <!-- Ítem 1: ID -->
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent">
+                                <span class="text-muted fw-semibold"><i class="bi bi-hash me-2 text-primary"></i>Código
+                                    ID</span>
+                                <span class="badge bg-secondary rounded-pill px-3 py-2 fw-bold" th:text="*{id}">0</span>
+                            </li>
+
+                            <!-- Ítem 2: Nombre -->
+                            <li class="list-group-item py-3 bg-transparent">
+                                <span class="text-muted fw-semibold d-block mb-1"><i
+                                        class="bi bi-journal-text me-2 text-primary"></i>Nombre de la Asignatura</span>
+                                <span class="fs-5 fw-bold text-dark" th:text="*{nombre}">Nombre</span>
+                            </li>
+
+                            <!-- Ítem 3: Año Cursada -->
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent">
+                                <span class="text-muted fw-semibold"><i
+                                        class="bi bi-calendar3 me-2 text-primary"></i>Año de Cursada</span>
+                                <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-medium"
+                                    th:text="*{anioCursada} + '° Año'">1° Año</span>
+                            </li>
+
+                            <!-- Ítem 4: Tipo de Materia -->
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent">
+                                <span class="text-muted fw-semibold"><i class="bi bi-tags me-2 text-primary"></i>Régimen
+                                    / Tipo</span>
+                                <span
+                                    class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2 rounded-pill text-uppercase small fw-bold"
+                                    th:text="*{tipoMateria}">Tipo</span>
+                            </li>
+
+                        </ul>
+
+                        <!-- Panel de Acciones y Control -->
+                        <div class="row g-2">
+                            <!-- Botón Modificar Integrado -->
+                            <div class="col-6">
+                                <a th:href="@{/materia/{id}/form-editar(id=*{id})}"
+                                    class="btn btn-warning text-dark w-100 rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                                    <i class="bi bi-pencil-fill"></i> Editar
+                                </a>
+                            </div>
+                            <!-- Botón Eliminar Estilizado -->
+                            <div class="col-6">
+                                <a th:href="@{/materia/{id}/eliminar(id=*{id})}"
+                                    class="btn btn-danger w-100 rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                                    onclick="return confirm('¿De verdad querés eliminar esta materia? Esta acción no se puede deshacer.');">
+                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                </a>
+                            </div>
+                            <!-- Volver al Buscador o Listado -->
+                            <div class="col-12 mt-3 text-center">
+                                <a th:href="@{/materia/buscar}"
+                                    class="btn btn-link btn-sm text-secondary text-decoration-none">
+                                    <i class="bi bi-arrow-left me-1"></i> Realizar otra búsqueda
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

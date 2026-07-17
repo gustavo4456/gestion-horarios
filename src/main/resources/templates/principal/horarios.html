@@ -4,78 +4,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Horarios</title>
+    <title>Cronograma de Horarios - Gestor Académico</title>
 </head>
 
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
+
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Buscar Horarios</h2>
+    <main class="container my-5 flex-grow-1">
 
-    <form th:action="@{/filtro-horarios}" method="get">
+        <!-- PANEL DE BÚSQUEDA Y FILTRADO -->
+        <div class="card border-0 shadow-sm rounded-4 mb-5">
+            <div class="card-body p-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-lg-4 text-center text-lg-start">
+                        <h4 class="fw-bold text-dark mb-1">
+                            <i class="bi bi-calendar3 text-primary me-2"></i>Consulta de Horarios
+                        </h4>
+                        <p class="text-muted mb-0 small">Seleccioná un perfil para renderizar su agenda académica</p>
+                    </div>
 
-        <label for="persona">Perfil:</label>
-        <select name="persona">
-            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
-        </select>
+                    <div class="col-lg-8">
+                        <form th:action="@{/filtro-horarios}" method="get"
+                            class="row g-2 justify-content-lg-end align-items-end">
+                            <div class="col-sm-5">
+                                <label class="form-label small fw-semibold text-muted mb-1">Perfil / Alumno</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                            class="bi bi-person-circle"></i></span>
+                                    <select name="persona" class="form-select ps-2">
+                                        <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label small fw-semibold text-muted mb-1">Año Lectivo</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                            class="bi bi-calendar-event"></i></span>
+                                    <input type="number" name="anioLectivo" id="anioLectivo" th:value="${anioLectivo}"
+                                        class="form-control ps-2" placeholder="Ej: 2026" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 d-grid">
+                                <button type="submit" class="btn btn-primary btn-sm rounded-pill fw-bold shadow-sm">
+                                    <i class="bi bi-search me-1"></i> Ver Agenda
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <label for="anioLectivo">Año Lectivo:</label>
-        <input type="number" name="anioLectivo" id="anioLectivo">
 
-        <input type="submit" value="Buscar">
-    </form>
+        <!-- LISTADO DE HORARIOS -->
+        <div th:if="${horariosPorAnio != null}" class="space-y-5">
 
-    <h2>Listado de Horarios</h2>
+            <div th:each="entry : ${horariosPorAnio}">
 
-    <div th:each="entry : ${horariosPorAnio}">
+                <div class="d-flex align-items-center gap-2 mb-3 mt-4 justify-content-center justify-content-md-start">
+                    <span class="badge bg-dark rounded-pill px-3 py-2 fs-6 shadow-sm"
+                        th:text="${entry.key} + '° Año' + (${anioLectivo != null} ? ' — Ciclo ' + ${anioLectivo} : '')">
+                        1° Año
+                    </span>
+                </div>
 
-        <h2 th:text="${entry.key} + '° Año' + ' (' + ${anioLectivo} + ')'"></h2>
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
 
-        <table border="1">
+                            <table class="table table-bordered table-hover align-middle mb-0 text-center"
+                                style="min-width: 800px;">
+                                <thead class="table-dark text-uppercase small" style="letter-spacing: 0.5px;">
+                                    <tr>
+                                        <th style="width: 15%;"
+                                            class="bg-dark-subtle text-dark fw-bold text-start ps-3">
+                                            <i class="bi bi-clock me-1"></i> Rango
+                                        </th>
+                                        <th th:each="dia : ${diasSemana}" th:text="${dia}" style="width: 17%;">Día</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        th:each="hora : ${horasPorAnioMap != null ? horasPorAnioMap.get(entry.key) : null}">
 
-            <thead>
-                <tr>
-                    <!-- <th>Horario</th> -->
-                    <th th:each="dia : ${diasSemana}" th:text="${dia}"></th>
-                </tr>
-            </thead>
+                                        <td class="bg-light text-start ps-3 font-monospace fw-bold text-secondary small"
+                                            th:text="${hora}">
+                                            00:00 - 00:00
+                                        </td>
 
-            <tbody>
+                                        <td th:each="dia : ${diasSemana}" class="p-2 position-relative align-top"
+                                            style="background-color: #fcfcfc;">
 
-                <tr th:each="hora : ${horasPorAnioMap.get(entry.key)}">
+                                            <!-- 🎨 TARJETA DINÁMICA: Se añadieron las clases identificadoras y el 'th:data-materia' -->
+                                            <div class="tarjeta-materia p-2.5 rounded-3 border-start border-3 text-start shadow-sm my-1"
+                                                th:each="h : ${entry.value}" th:data-materia="${h.materia}"
+                                                th:if="${h.dia == dia and h.horaInicio != null and h.horaFin != null and (h.horaInicio.toString() + ' - ' + h.horaFin.toString()) == hora}">
 
-                    <!-- Columna de horario -->
-                    <!-- <td th:text="${hora}"></td> -->
+                                                <div class="materia-titulo fw-bold mb-1 small text-wrap lh-sm"
+                                                    th:text="${h.materia}">
+                                                    Materia
+                                                </div>
 
-                    <!-- Columnas de días -->
-                    <td th:each="dia : ${diasSemana}">
+                                                <span
+                                                    class="materia-badge badge bg-white border rounded-pill px-2 py-0.5 fw-semibold mb-1 text-uppercase text-nowrap"
+                                                    style="font-size: 0.65rem;" th:text="${h.tipoMateria}">
+                                                    Tipo
+                                                </span>
 
-                        <div th:each="h : ${entry.value}" th:if="${h.dia == dia 
-                         and (h.horaInicio.toString() + ' - ' + h.horaFin.toString()) == hora}">
+                                                <div class="materia-horario text-nowrap font-monospace"
+                                                    style="font-size: 0.7rem;">
+                                                    <i class="bi bi-clock-history me-1"></i>
+                                                    <span th:text="${h.horaInicio} + ' - ' + ${h.horaFin}">00:00 -
+                                                        00:00</span>
+                                                </div>
+                                            </div>
 
-                            <strong th:text="${h.materia}"></strong>
-
-                            <br>
-
-                            <small th:text="${h.tipoMateria}"></small>
-
-                            <br>
-
-                            <small th:text="${(h.horaInicio + ' - ' + h.horaFin)}"></small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                    </td>
+        </div>
 
-                </tr>
+        <div th:if="${horariosPorAnio == null or horariosPorAnio.isEmpty()}"
+            class="card border-0 shadow-sm rounded-4 py-5 text-center bg-white">
+            <div class="card-body">
+                <i class="bi bi-calendar-x text-muted display-4 d-block mb-3"></i>
+                <h5 class="text-secondary fw-semibold">No hay cronogramas generados</h5>
+                <p class="text-muted small mb-0">Completá el filtro superior con un año lectivo válido para procesar los
+                    horarios.</p>
+            </div>
+        </div>
 
-            </tbody>
+    </main>
 
-        </table>
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
 
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- ⚡ SCRIPT DE ASIGNACIÓN DINÁMICA DE COLORES POR MATERIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Paleta de colores sutiles y estéticos (Fondo, Borde Izquierdo, Texto principal, Fondo Badge)
+            const paletas = [
+                { bg: '#e0f2fe', border: '#0284c7', text: '#0369a1', badgeBg: '#bae6fd' }, // Azul / Cyan
+                { bg: '#dcfce7', border: '#16a34a', text: '#15803d', badgeBg: '#bbf7d0' }, // Verde Esmeralda
+                { bg: '#fef3c7', border: '#d97706', text: '#b45309', badgeBg: '#fde68a' }, // Ámbar / Amarillo
+                { bg: '#f3e8ff', border: '#9333ea', text: '#7e22ce', badgeBg: '#e9d5ff' }, // Violeta / Púrpura
+                { bg: '#ffe4e6', border: '#e11d48', text: '#be123c', badgeBg: '#fecdd3' }, // Rosado / Carmín
+                { bg: '#e0f2f1', border: '#00897b', text: '#00695c', badgeBg: '#b2dfdb' }, // Teal / Turquesa
+                { bg: '#ffedd5', border: '#ea580c', text: '#c2410c', badgeBg: '#fed7aa' }, // Naranja
+                { bg: '#f1f5f9', border: '#475569', text: '#334155', badgeBg: '#cbd5e1' }  // Pizarra / Gris
+            ];
+
+            // Función de Hash para convertir cualquier texto en un índice numérico único y consistente
+            function stringToHashIndex(str, max) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                return Math.abs(hash) % max;
+            }
+
+            // Seleccionamos todas las tarjetas de materia incrustadas en el DOM
+            const tarjetas = document.querySelectorAll('.tarjeta-materia');
+
+            tarjetas.forEach(tarjeta => {
+                const nombreMateria = tarjeta.getAttribute('data-materia');
+                if (!nombreMateria) return;
+
+                // Obtenemos el índice correspondiente según el nombre
+                const selectorIndex = stringToHashIndex(nombreMateria, paletas.length);
+                const colorData = paletas[selectorIndex];
+
+                // Aplicamos estilos en tiempo de renderizado al contenedor
+                tarjeta.style.backgroundColor = colorData.bg;
+                tarjeta.style.borderColor = colorData.border;
+
+                // Cambiamos colores del texto interno y elementos secundarios
+                tarjeta.querySelectorAll('.materia-titulo, .materia-horario').forEach(el => {
+                    el.style.setProperty('color', colorData.text, 'important');
+                });
+
+                // Cambiamos el estilo visual de la etiqueta (Badge)
+                const badge = tarjeta.querySelector('.materia-badge');
+                if (badge) {
+                    badge.style.backgroundColor = colorData.badgeBg;
+                    badge.style.setProperty('color', colorData.text, 'important');
+                    badge.style.borderColor = colorData.border;
+                }
+            });
+        });
+    </script>
 </body>
 
-</html>
+</html> 

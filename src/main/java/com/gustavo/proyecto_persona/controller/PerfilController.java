@@ -62,6 +62,7 @@ public class PerfilController {
         }
 
         model.addAttribute("msj", "Persona Guardada con exito.");
+        model.addAttribute("urlRetorno", "/perfil/listado");
 
         // Guardamos pasándole el username de la sesión
         perfilService.guardarPersona(persona, principal.getName());
@@ -96,6 +97,7 @@ public class PerfilController {
         perfilService.borrarPersona(id, principal.getName());
 
         model.addAttribute("msj", "Usuario Eliminado.");
+        model.addAttribute("urlRetorno", "/perfil/listado");
 
         return "mensaje";
     }
@@ -113,6 +115,7 @@ public class PerfilController {
         perfilAEditar.setNombre(perfil.getNombre());
 
         model.addAttribute("persona", perfilAEditar);
+        model.addAttribute("urlRetorno", "/perfil/listado");
 
         return "/perfil/form-editar-persona";
     }
@@ -131,6 +134,7 @@ public class PerfilController {
         perfilService.actualizarPersona(persona, principal.getName());
 
         model.addAttribute("msj", "Los Datos de la Persona fueron actualizados.");
+        model.addAttribute("urlRetorno", "/perfil/listado");
 
         return "mensaje";
     }

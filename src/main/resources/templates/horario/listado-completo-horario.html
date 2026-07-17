@@ -4,58 +4,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Listado Completo Horarios</title>
+    <title>Listado de Horarios - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para clavar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Filtrado de horarios</h2>
+    <!-- Contenedor Principal -->
+    <main class="container my-5 flex-grow-1">
 
-    <form th:action="@{/horario/filtro}" method="get">
-        <label for="filtro">Filtro:</label>
+        <!-- Fila Superior: Título + Formulario de Filtro Compacto -->
+        <div class="row align-items-center mb-4 g-3">
+            <div class="col-md text-center text-md-start">
+                <h2 class="fw-bold text-dark mb-1">
+                    <i class="bi bi-calendar3 text-primary me-2"></i>Cronograma de Horarios
+                </h2>
+                <p class="text-muted mb-0 small">
+                    Gestioná y filtrá las bandas horarias por año académico
+                </p>
+            </div>
 
-        <select name="filtro" id="filtro">
-            <option value="1">Primer año</option>
-            <option value="2">Segundo año</option>
-            <option value="3">Tercer año</option>
-            <option value="4">Cuarto año</option>
-            <option value="5">Quinto año</option>
-        </select>
+            <div class="col-md-auto d-flex justify-content-center">
+                <!-- Formulario de filtro unificado estilo cápsula -->
+                <form th:action="@{/horario/filtro}" method="get"
+                    class="d-flex gap-2 align-items-center bg-white p-2 rounded-pill shadow-sm border">
+                    <div class="input-group input-group-sm border-0">
+                        <span class="input-group-text bg-transparent border-0 text-muted ps-3 pe-1">
+                            <i class="bi bi-funnel-fill text-primary"></i>
+                        </span>
+                        <select name="filtro" id="filtro"
+                            class="form-select form-select-sm border-0 bg-transparent pe-5 fw-medium text-dark"
+                            style="box-shadow: none; cursor: pointer;">
+                            <option value="1">Primer año</option>
+                            <option value="2">Segundo año</option>
+                            <option value="3">Tercer año</option>
+                            <option value="4">Cuarto año</option>
+                            <option value="5">Quinto año</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 fw-bold shadow-sm">
+                        Filtrar
+                    </button>
+                </form>
+            </div>
+        </div>
 
-        <input type="submit" value="Filtrar">
-    </form>
+        <!-- Tarjeta Contenedora de la Tabla -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-0">
 
-    <h2>Listado Completo</h2>
-    <table border="1">
+                <!-- Contenedor responsivo para visualización móvil -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead class="table-dark text-uppercase small" style="letter-spacing: 0.5px;">
+                            <tr>
+                                <th class="ps-4" style="width: 10%;">ID</th>
+                                <th style="width: 35%;">Materia</th>
+                                <th style="width: 15%;">Tipo / Régimen</th>
+                                <th style="width: 15%;">Día</th>
+                                <th style="width: 15%;">Rango Horario</th>
+                                <th class="text-end pe-4" style="width: 10%;">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iteración corregida sobre la fila <tr> -->
+                            <tr th:each="h : ${horarios}">
+                                <td class="ps-4 fw-semibold text-muted" th:text="${h.id}">ID</td>
+                                <td>
+                                    <span class="fw-bold text-dark" th:text="${h.materia.nombre}">Nombre Materia</span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge bg-info bg-opacity-10 text-info fw-semibold px-3 py-2 border border-info border-opacity-25 rounded-pill text-uppercase small"
+                                        th:text="${h.tipoMateria}">
+                                        Tipo
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-semibold text-secondary">
+                                        <i class="bi bi-calendar2-week text-primary me-1"></i>
+                                        <span th:text="${h.diasSemana}">Día</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-medium">
+                                        <i class="bi bi-clock text-primary me-1"></i>
+                                        <span th:text="${h.horaInicio} + ' - ' + ${h.horaFin}">00:00 - 00:00</span>
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <!-- Botones de Acción -->
+                                    <div class="btn-group btn-group-sm shadow-sm rounded-pill overflow-hidden"
+                                        role="group">
+                                        <a th:href="@{/horario/{id}/editar(id=${h.id})}"
+                                            class="btn btn-warning text-dark px-3" title="Editar horario">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a th:href="@{/horario/{id}/eliminar(id=${h.id})}" class="btn btn-danger px-3"
+                                            title="Eliminar horario"
+                                            onclick="return confirm('¿Estás seguro de que querés eliminar este horario?');">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
 
-        <head>
-            <tr>
-                <th>Id:</th>
-                <th>Materia</th>
-                <th>Tipo</th>
-                <th>Día</th>
-                <th>Horario</th>
-                <th>Opciones</th>
-            </tr>
-        </head>
+                            <!-- Estado Vacío -->
+                            <tr th:if="${horarios.isEmpty()}">
+                                <td colspan="6" class="text-center py-5 bg-white">
+                                    <i class="bi bi-calendar-x text-muted display-4 d-block mb-3"></i>
+                                    <h5 class="text-secondary fw-semibold">No se encontraron horarios</h5>
+                                    <p class="text-muted small">Probá seleccionando otro año o cargá un nuevo cronograma
+                                        en el sistema.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <tbody th:each="h : ${horarios}">
-            <td th:text="${h.id}">ID</td>
-            <td th:text="${h.materia.nombre}">Nombre Materia</td>
-            <td th:text="${h.tipoMateria}">Tipo de materia</td>
-            <td th:text="${h.diasSemana}">Día</td>
-            <td th:text="${h.horaInicio} + ' - ' + ${h.horaFin} "></td>
+            </div>
+        </div>
 
-            <td>
-                <a th:href="@{/horario/{id}/editar(id=${h.id})}">Editar</a>
-                <a th:href="@{/horario/{id}/eliminar(id=${h.id})}">Eliminar</a>
-            </td>
-        </tbody>
+    </main>
 
-    </table>
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

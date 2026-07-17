@@ -4,51 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Crear nuevo horario</title>
+    <title>Crear Nuevo Horario - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para asegurar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Crear horario</h2>
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
 
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-8 col-lg-6">
 
+                <!-- Tarjeta del Formulario -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
-    <form th:action="@{/horario/guardar}" method="post" th:object="${horario}">
+                    <!-- Encabezado con ícono de calendario/reloj -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-calendar-plus fs-4"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Asignar Nuevo Horario</h4>
+                        <small class="text-secondary">Definí los días y rangos horarios de cursada</small>
+                    </div>
 
-        <label for="materia">Materia:</label>
-        <select th:field="*{materia}">
-            <option th:each="m : ${materias}" th:value="${m.id}" th:text="${m.nombre}"></option>
-        </select>
-        <span th:if="${#fields.hasErrors('materia')}" th:errors="*{materia}" style="color: red;">
+                    <!-- Cuerpo del Formulario -->
+                    <div class="card-body p-4 bg-white">
+                        <form th:action="@{/horario/guardar}" method="post" th:object="${horario}">
 
-        </span>
+                            <!-- Campo 1: Selección de Materia (Ancho completo) -->
+                            <div class="mb-3">
+                                <label for="materia" class="form-label fw-semibold text-muted">Materia /
+                                    Asignatura</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light text-secondary border-end-0">
+                                        <i class="bi bi-journal-bookmark"></i>
+                                    </span>
+                                    <select th:field="*{materia}" id="materia" class="form-select ps-2"
+                                        th:classappend="${#fields.hasErrors('materia')} ? 'is-invalid' : ''" required>
+                                        <option value="" selected disabled>Seleccioná una materia...</option>
+                                        <option th:each="m : ${materias}" th:value="${m.id}" th:text="${m.nombre}">
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback text-start" th:if="${#fields.hasErrors('materia')}"
+                                        th:errors="*{materia}">
+                                        Error en materia
+                                    </div>
+                                </div>
+                            </div>
 
-        <label for="diasSemana">Día:</label>
-        <select th:field="*{diasSemana}">
-            <option th:each="li : ${listaDias}" th:value="${li}" th:text="${li}"></option>
-        </select>
-        <span th:if="${#fields.hasErrors('diasSemana')}" th:errors="*{diasSemana}" style="color: red;"></span>
+                            <!-- Fila en paralelo: Día de la Semana y Tipo de Materia -->
+                            <div class="row g-3 mb-3">
+                                <!-- Campo 2: Día -->
+                                <div class="col-md-6">
+                                    <label for="diasSemana" class="form-label fw-semibold text-muted">Día de
+                                        Cursada</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-calendar-event"></i>
+                                        </span>
+                                        <select th:field="*{diasSemana}" id="diasSemana" class="form-select ps-2"
+                                            th:classappend="${#fields.hasErrors('diasSemana')} ? 'is-invalid' : ''"
+                                            required>
+                                            <option th:each="li : ${listaDias}" th:value="${li}" th:text="${li}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback text-start"
+                                            th:if="${#fields.hasErrors('diasSemana')}" th:errors="*{diasSemana}">
+                                            Error en día
+                                        </div>
+                                    </div>
+                                </div>
 
-        <label for="tipoMateria">Tipo Materia:</label>
-        <select th:field="*{tipoMateria}">
-            <option th:each="tm : ${listaTiposMateria}" th:value="${tm}" th:text="${tm}"></option>
-        </select>
-        <span th:if="${#fields.hasErrors('tipoMateria')}" th:errors="*{tipoMateria}" style="color: red;"></span>
+                                <!-- Campo 3: Tipo de Materia -->
+                                <div class="col-md-6">
+                                    <label for="tipoMateria" class="form-label fw-semibold text-muted">Tipo
+                                        Materia</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-tags"></i>
+                                        </span>
+                                        <select th:field="*{tipoMateria}" id="tipoMateria" class="form-select ps-2"
+                                            th:classappend="${#fields.hasErrors('tipoMateria')} ? 'is-invalid' : ''"
+                                            required>
+                                            <option th:each="tm : ${listaTiposMateria}" th:value="${tm}"
+                                                th:text="${tm}"></option>
+                                        </select>
+                                        <div class="invalid-feedback text-start"
+                                            th:if="${#fields.hasErrors('tipoMateria')}" th:errors="*{tipoMateria}">
+                                            Error en tipo
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <label for="horaInicio">Hora de inicio:</label>
-        <input type="time" th:field="*{horaInicio}">
-        <span th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}" style="color: red;"></span>
+                            <!-- Fila en paralelo: Rango Horario (Inicio y Fin) -->
+                            <div class="row g-3 mb-4">
+                                <!-- Campo 4: Hora de Inicio -->
+                                <div class="col-md-6">
+                                    <label for="horaInicio" class="form-label fw-semibold text-muted">Hora de
+                                        Inicio</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-clock"></i>
+                                        </span>
+                                        <input type="time" th:field="*{horaInicio}" id="horaInicio"
+                                            class="form-control ps-2"
+                                            th:classappend="${#fields.hasErrors('horaInicio')} ? 'is-invalid' : ''"
+                                            required>
+                                        <div class="invalid-feedback text-start"
+                                            th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}">
+                                            Error en hora inicio
+                                        </div>
+                                    </div>
+                                </div>
 
-        <label for="horaFin">Hora de fin:</label>
-        <input type="time" th:field="*{horaFin}">
-        <span th:if="${#fields.hasErrors('horaFin')}" th:errors="*{horaFin}" style="color: red;"></span>
+                                <!-- Campo 5: Hora de Fin -->
+                                <div class="col-md-6">
+                                    <label for="horaFin" class="form-label fw-semibold text-muted">Hora de Fin</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-clock-fill"></i>
+                                        </span>
+                                        <input type="time" th:field="*{horaFin}" id="horaFin" class="form-control ps-2"
+                                            th:classappend="${#fields.hasErrors('horaFin')} ? 'is-invalid' : ''"
+                                            required>
+                                        <div class="invalid-feedback text-start" th:if="${#fields.hasErrors('horaFin')}"
+                                            th:errors="*{horaFin}">
+                                            Error en hora fin
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <button type="submit">Guardar</button>
-    </form>
+                            <!-- Botones de Acción -->
+                            <div class="d-grid gap-2 pt-2">
+                                <button type="submit"
+                                    class="btn btn-success rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-check-circle-fill"></i> Registrar Horario
+                                </button>
+                                <a th:href="@{/horario/listado}"
+                                    class="btn btn-link btn-sm text-secondary rounded-pill text-decoration-none">
+                                    Cancelar y volver al listado
+                                </a>
+                            </div>
 
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

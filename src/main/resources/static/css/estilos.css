@@ -1,39 +1,60 @@
-.menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    background: #2c3e50;
-    padding: 0;
-    margin: 0;
+/* --- CONFIGURACIONES DEL NAVBAR --- */
+
+/* Abre los dropdowns de Bootstrap al pasar el mouse por encima (solo en pantallas grandes) */
+@media (min-width: 992px) {
+    .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+        /* Evita que quede un espacio vacío y se cierre al bajar el cursor */
+    }
+
+    /* ⚡ NUEVO: Fuerza al menú de usuario a alinearse a la derecha y no salirse de la pantalla */
+    .navbar-nav .dropdown-menu-end {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    /* Animación suave para la aparición de las opciones */
+    .dropdown-menu {
+        animation: fadeIn 0.15s ease-out;
+    }
 }
 
-.menu > li {
-    position: relative;
+/* Efecto de fade para los submenús */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.menu a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 15px;
+/* Evita que el botón de cerrar sesión rompa renglón o se achique */
+.dropdown-item {
+    white-space: nowrap !important;
 }
 
-.submenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    list-style: none;
-    background: #34495e;
-    padding: 0;
-    margin: 0;
-    min-width: 180px;
+/* Animación de elevación para las tarjetas del Home */
+.hover-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.submenu li a {
-    padding: 10px 15px;
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
-.menu li:hover .submenu {
-    display: block;
+/* --- CONFIGURACIONES DEL FOOTER --- */
+
+/* Animación de color para los links del footer */
+.hover-link {
+    transition: color 0.2s ease;
+}
+
+.hover-link:hover {
+    color: #ffc107 !important; /* Cambia a amarillo Bootstrap en hover */
 }

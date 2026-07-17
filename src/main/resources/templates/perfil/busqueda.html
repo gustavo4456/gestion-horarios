@@ -4,18 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Buscar perfil</title>
+    <title>Buscar Perfil - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para clavar el footer abajo -->
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
-    <h2>Buscar por ID</h2>
-    <form th:action="@{/perfil/buscando}" method="get">
-        <label for="id">ID</label>
-        <input type="number" name="idBusqueda" id="id">
-        <button type="submit">Buscar</button>
-    </form>
+
+    <!-- Contenedor Principal Centrado -->
+    <main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
+
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-6 col-lg-4">
+
+                <!-- Tarjeta del Formulario -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <!-- Encabezado de la tarjeta con color sutil -->
+                    <div class="card-header bg-dark text-white p-4 border-0 text-center">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                            style="width: 50px; height: 50px;">
+                            <i class="bi bi-search fs-4"></i>
+                        </div>
+                        <h4 class="mb-0 fw-bold">Buscar por ID</h4>
+                        <small class="text-secondary">Localizá un perfil en la base de datos</small>
+                    </div>
+
+                    <!-- Cuerpo del Formulario -->
+                    <div class="card-body p-4 bg-white">
+                        <form th:action="@{/perfil/buscando}" method="get">
+
+                            <!-- Grupo del Input -->
+                            <div class="mb-4">
+                                <label for="id" class="form-label fw-semibold text-muted">ID del Registro</label>
+                                <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                                    <!-- Ícono decorativo dentro del input -->
+                                    <span class="input-group-text bg-light border-end-0 text-secondary">
+                                        <i class="bi bi-hash"></i>
+                                    </span>
+                                    <input type="number" name="idBusqueda" id="id"
+                                        class="form-control border-start-0 ps-2" placeholder="Ej: 15" required>
+                                </div>
+                                <div class="form-text text-muted mt-2 small">
+                                    Ingresá el número identificador numérico único.
+                                </div>
+                            </div>
+
+                            <!-- Botón de Envío -->
+                            <div class="d-grid gap-2">
+                                <button type="submit"
+                                    class="btn btn-primary rounded-pill py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-search-heart"></i> Ejecutar Búsqueda
+                                </button>
+                                <a th:href="@{/perfil/listado}"
+                                    class="btn btn-link btn-sm text-secondary rounded-pill text-decoration-none">
+                                    Volver al listado completo
+                                </a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

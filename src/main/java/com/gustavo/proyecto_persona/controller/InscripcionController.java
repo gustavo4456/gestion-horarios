@@ -69,6 +69,7 @@ public class InscripcionController {
         inscripcionService.guardarInscripcion(inscripcion, seleccion, principal.getName());
 
         model.addAttribute("msj", "Se guardo la inscripción en la BD.");
+        model.addAttribute("urlRetorno", "/inscripcion/listado");
 
         return "mensaje";
     }
@@ -222,6 +223,7 @@ public class InscripcionController {
         inscripcionService.borrarInscripcion(id, principal.getName());
 
         model.addAttribute("msj", "Se ha eliminado la inscripción.");
+        model.addAttribute("urlRetorno", "/inscripcion/listado");
 
         return "mensaje";
     }
@@ -257,6 +259,7 @@ public class InscripcionController {
         inscripcionService.actualizarInscripcion(inscripcion, seleccion, principal.getName());
 
         model.addAttribute("msj", "Se actualizaron los datos de la inscripción.");
+        model.addAttribute("urlRetorno", "/inscripcion/listado");
 
         return "mensaje";
     }

@@ -4,34 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS y los Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <title th:text="'Listado de perfiles (' + ${cantidadPersonas} +')'">Listado de perfiles</title>
 </head>
 
-<body>
+<!-- ⚡ Claves para el sticky footer: d-flex flex-column y min-vh-100 -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Listado de los perfiles en la BD</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Opción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="p : ${listadoPersonas}">
-                <td th:text="${p.id}">0</td>
-                <td th:text="${p.nombre}">Nombre</td>
-                <td>
-                    <a th:href="@{/perfil/{id}/eliminar(id=${p.id})}">Eliminar</a>
-                    <a th:href="@{/perfil/{id}/form-editar(id=${p.id})}">Editar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- ⚡ Envolvemos todo en <main> con flex-grow-1 para que empuje el footer al fondo -->
+    <main class="container my-5 flex-grow-1">
+
+        <h2 class="mb-4 text-secondary fw-bold">Listado de los perfiles en la BD</h2>
+
+        <!-- ⚡ Reemplazamos la tabla básica por una moderna de Bootstrap -->
+        <div class="table-responsive shadow-sm rounded-3">
+            <table class="table table-striped table-hover align-middle mb-0 bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 15%">ID</th>
+                        <th>Nombre</th>
+                        <th class="text-center" style="width: 25%">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${listadoPersonas}">
+                        <td class="fw-bold text-muted" th:text="${p.id}">0</td>
+                        <td th:text="${p.nombre}">Nombre</td>
+                        <td class="text-center">
+                            <!-- Botones estilizados -->
+                            <a th:href="@{/perfil/{id}/eliminar(id=${p.id})}"
+                                class="btn btn-outline-danger btn-sm me-1">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                            <a th:href="@{/perfil/{id}/form-editar(id=${p.id})}" class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- ⚡ DETALLE PREMIUM: Si la lista llega a estar vacía, muestra este mensaje prolijo -->
+                    <tr th:if="${#lists.isEmpty(listadoPersonas)}">
+                        <td colspan="3" class="text-center text-muted py-4">
+                            <i class="bi bi-folder-x fs-2 d-block mb-2"></i>
+                            No hay perfiles registrados en la base de datos.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

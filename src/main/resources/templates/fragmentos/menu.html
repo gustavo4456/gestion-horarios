@@ -1,78 +1,122 @@
 <header th:fragment="menu">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid px-4">
+            <!-- Logo / Nombre de la App -->
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-warning me-2 fs-4"></i>
+                <span class="fw-bold">Gestor Académico</span>
+            </a>
 
-    <nav>
-        <ul class="menu">
+            <!-- Botón para móviles (Hamburger menu) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAcademico">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <li>
-                <a th:href="@{/horarios}">Horarios</a>
-            </li>
+            <!-- Contenedor de links -->
+            <div class="collapse navbar-collapse" id="navbarAcademico">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <li>
-                <a href="#">Gestión Perfil</a>
-                <ul class="submenu">
-                    <li><a th:href="@{/perfil/listado}">Listado de perfiles en la BD.</a></li>
-                    <li><a th:href="@{/perfil/nueva}">Crear un perfil.</a></li>
-                    <li><a th:href="@{/perfil/buscar}">Buscar Por ID.</a></li>
+                    <!-- Link Directo: Horarios -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/horarios}">Horarios</a>
+                    </li>
+
+                    <!-- Dropdown: Gestión Perfil -->
+                    <li class="nav-item dropdown">
+                        <!-- ⚡ Agregado data-bs-toggle para que funcione en móviles -->
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión Perfil
+                        </a>
+                        <!-- ⚡ Agregada la clase dropdown-menu-dark para que sea oscuro -->
+                        <ul class="dropdown-menu dropdown-menu-dark shadow">
+                            <li><a class="dropdown-item" th:href="@{/perfil/listado}">Listado de perfiles</a></li>
+                            <li><a class="dropdown-item" th:href="@{/perfil/nueva}">Crear un perfil</a></li>
+                            <li><a class="dropdown-item" th:href="@{/perfil/buscar}">Buscar por ID</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown: Gestión Materia -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión Materia
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow">
+                            <li><a class="dropdown-item" th:href="@{/materia/listado}">Listado de materias</a></li>
+                            <li><a class="dropdown-item" th:href="@{/materia/nueva}">Crear una materia</a></li>
+                            <li><a class="dropdown-item" th:href="@{/materia/buscar}">Buscar por ID</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown: Gestión Horario -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión Horario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow">
+                            <li><a class="dropdown-item" th:href="@{/horario/listado}">Listado de horarios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/horario/nuevo}">Crear un horario</a></li>
+                            <li><a class="dropdown-item" th:href="@{/horario/buscar}">Buscar por ID</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown: Gestión Inscripción -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión Inscripción
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow">
+                            <li><a class="dropdown-item" th:href="@{/inscripcion/listado}">Listado de inscripciones</a></li>
+                            <li><a class="dropdown-item" th:href="@{/inscripcion/nueva}">Crear una inscripción</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
-            </li>
 
-            <li>
-                <a href="#">Gestión Materia</a>
-                <ul class="submenu">
-                    <li><a th:href="@{/materia/listado}">Listado de materias en la BD.</a></li>
-                    <li><a th:href="@{/materia/nueva}">Crear una materia.</a></li>
-                    <li><a th:href="@{/materia/buscar}">Buscar Por ID.</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">Gestión Horario</a>
-                <ul class="submenu">
-                    <li><a th:href="@{/horario/listado}">Listado de horarios en la BD.</a></li>
-                    <li><a th:href="@{/horario/nuevo}">Crear un horario.</a></li>
-                    <li><a th:href="@{/horario/buscar}">Buscar Por ID.</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">Gestión Inscripción</a>
-                <ul class="submenu">
-                    <li><a th:href="@{/inscripcion/listado}">Listado de inscripciones en la BD.</a></li>
-                    <li><a th:href="@{/inscripcion/nueva}">Crear una inscripcion.</a></li>
-                </ul>
-            </li>
-
-            <!-- 🌟 ZONA DE USUARIO Y CERRAR SESIÓN -->
-            <!-- th:if asegura que solo se muestre si hay una sesión activa de un usuario real -->
-            <!-- 🌟 ZONA DE USUARIO Y CERRAR SESIÓN -->
-            <!-- sec:authorize="isAuthenticated()" reemplaza al th:if y es mucho más seguro -->
-            <li sec:authorize="isAuthenticated()">
-                <a href="#" style="color: #007bff; font-weight: bold;">
-                    👤 <span sec:authentication="name">Nombre de Usuario</span>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <form th:action="@{/logout}" method="post" style="padding: 0; margin: 0;">
-                            <button type="submit" style="
-                                background: none; 
-                                border: none; 
-                                color: #ff4d4d; 
-                                cursor: pointer; 
-                                font-family: inherit; 
-                                font-size: inherit; 
-                                padding: 10px 15px; 
-                                width: 100%; 
-                                text-align: left;
-                                display: block;
-                            ">
-                                Cerrar Sesión
-                            </button>
-                        </form>
+                <!-- Sección Derecha: Usuario y Logout -->
+                <ul class="navbar-nav ms-auto align-items-center" sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center text-info fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1 fs-5"></i>
+                            <span sec:authentication="name">Nombre de Usuario</span>
+                        </a>
+                        <!-- ⚡ dropdown-menu-dark también para el usuario -->
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
+                            <li class="w-100">
+                                <!-- ⚡ Forzamos al form a ocupar el 100% -->
+                                <form th:action="@{/logout}" method="post" class="w-100 m-0 p-0">
+                                    <!-- ⚡ Clases para que el botón no se corte y se alinee a la izquierda -->
+                                    <button type="submit" class="dropdown-item text-danger d-flex align-items-center py-2 w-100 text-start" style="cursor: pointer; white-space: nowrap;">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-            </li>
-
-        </ul>
+            </div>
+        </div>
     </nav>
-
 </header>
+
+
+<!-- 🌟 FRAGMENTO DEL FOOTER 🌟 -->
+<footer th:fragment="footer" class="bg-dark text-light py-4 mt-auto border-top border-secondary">
+    <div class="container-fluid px-4">
+        <div class="row align-items-center">
+            <!-- Izquierda: Copyright y año -->
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <span class="text-secondary small">
+                    &copy; <span th:text="${#calendars.year(#calendars.createNow())}">2026</span> 
+                    Gestor Académico. Todos los derechos reservados.
+                </span>
+            </div>
+            <!-- Derecha: Datos de la materia/universidad e íconos -->
+            <div class="col-md-6 text-center text-md-end">
+                <span class="text-secondary small me-3">Desarrollo de Software • TP Final</span>
+                <a href="https://github.com/gustavo4456" target="_blank" class="text-secondary hover-link fs-5">
+                    <i class="bi bi-github"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>

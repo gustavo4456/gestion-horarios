@@ -4,87 +4,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <title>Editar inscripción</title>
+    <title>Editar Inscripción - Gestor Académico</title>
 </head>
 
-<body>
+<!-- ⚡ Estructura Flexbox para asegurar el footer abajo -->
 
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Menú Superior -->
     <header th:replace="~{fragmentos/menu :: menu}"></header>
 
-    <h2>Filtrar Materias</h2>
+    <!-- Contenedor Principal -->
+    <main class="container my-5 flex-grow-1">
 
+        <div class="row justify-content-center g-4">
+            <div class="col-xl-10">
 
+                <!-- SECCIÓN 1: Filtro de Materias para la Edición -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <i class="bi bi-filter-right text-warning fs-5"></i>
+                            <h5 class="fw-bold text-dark mb-0">Filtrar Catálogo de Materias</h5>
+                        </div>
 
-    <form th:action="@{/inscripcion/filtro-materia-editar}" method="get">
+                        <form th:action="@{/inscripcion/filtro-materia-editar}" method="get"
+                            class="row g-3 align-items-end">
+                            <!-- ID de Inscripción Oculto Requerido para el Filtro -->
+                            <input type="hidden" name="idFiltro" id="idFiltro" th:value="${inscripcion.id}">
 
-        <input type="number" name="idFiltro" id="idFiltro" th:value="${inscripcion.id}" hidden>
+                            <div class="col-md-5">
+                                <label for="nombre" class="form-label small fw-semibold text-muted">Nombre de
+                                    Asignatura</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                            class="bi bi-search"></i></span>
+                                    <input type="text" name="nombre" id="nombre" class="form-control ps-2"
+                                        placeholder="Buscar por texto...">
+                                </div>
+                            </div>
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre">
+                            <div class="col-md-4">
+                                <label for="anioCursadaFiltro" class="form-label small fw-semibold text-muted">Año de
+                                    Cursada</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                            class="bi bi-hash"></i></span>
+                                    <input type="number" name="anioCursadaFiltro" id="anioCursadaFiltro"
+                                        class="form-control ps-2" placeholder="Ej: 1, 2, 3..." min="1" max="5">
+                                </div>
+                            </div>
 
+                            <div class="col-md-3 d-grid">
+                                <button type="submit" class="btn btn-dark btn-sm rounded-pill fw-bold shadow-sm">
+                                    <i class="bi bi-funnel-fill me-1"></i> Filtrar Tabla
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-        <label for="anioCursadaFiltro">Año lectivo:</label>
-        <input type="number" name="anioCursadaFiltro" id="anioCursadaFiltro">
+                <!-- SECCIÓN 2: Formulario de Modificación -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
+                    <!-- Encabezado de la tarjeta -->
+                    <div class="card-header bg-dark text-white p-4 border-0">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-warning bg-opacity-15 text-warning rounded-circle d-flex align-items-center justify-content-center"
+                                style="width: 48px; height: 48px;">
+                                <i class="bi bi-pencil-square fs-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="mb-0 fw-bold">Modificar Ficha de Inscripción</h4>
+                                <small class="text-secondary"
+                                    th:text="'Editando registro de sistema ID #' + ${inscripcion.id}">Modificación de
+                                    matrícula</small>
+                            </div>
+                        </div>
+                    </div>
 
-        <input type="submit" value="Buscar">
-    </form>
+                    <!-- Cuerpo Principal del Formulario -->
+                    <div class="card-body p-4 bg-white">
+                        <form th:action="@{/inscripcion/editar}" method="post" th:object="${inscripcion}">
 
-    <h2>Editar Inscripción</h2>
+                            <!-- Input Oculto del ID de Entidad (Spring Binding) -->
+                            <input type="hidden" th:field="*{id}">
 
+                            <!-- Bloque de Selección de Perfil y Ciclo -->
+                            <div class="row g-3 mb-4">
+                                <!-- Selección de Perfil -->
+                                <div class="col-md-6">
+                                    <label for="perfil" class="form-label fw-semibold text-muted">Perfil
+                                        Asignado</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-person-badge"></i>
+                                        </span>
+                                        <select th:field="*{perfil}" id="perfil" class="form-select ps-2"
+                                            th:classappend="${#fields.hasErrors('perfil')} ? 'is-invalid' : ''"
+                                            required>
+                                            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback text-start" th:if="${#fields.hasErrors('perfil')}"
+                                            th:errors="*{perfil}">
+                                            Error en perfil
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <!-- Selección de Año Lectivo -->
+                                <div class="col-md-6">
+                                    <label for="anioLectivo" class="form-label fw-semibold text-muted">Año
+                                        Lectivo</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text bg-light text-secondary border-end-0">
+                                            <i class="bi bi-calendar-check"></i>
+                                        </span>
+                                        <select th:field="*{anioLectivo}" id="anioLectivo" class="form-select ps-2"
+                                            th:classappend="${#fields.hasErrors('anioLectivo')} ? 'is-invalid' : ''"
+                                            required>
+                                            <option th:each="a : ${aniosLectivo}" th:value="${a}" th:text="${a}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback text-start"
+                                            th:if="${#fields.hasErrors('anioLectivo')}" th:errors="*{anioLectivo}">
+                                            Error en año lectivo
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Cartel de Alerta: Mutación en Base de Datos -->
+                            <div class="alert alert-warning border-0 shadow-sm rounded-3 small d-flex align-items-center gap-2 mb-4"
+                                role="alert">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0"></i>
+                                <div>
+                                    <strong class="text-dark">Atención:</strong> Al confirmar los cambios, el listado
+                                    seleccionado abajo <strong>reemplazará por completo</strong> el esquema previo de
+                                    materias vinculadas a esta inscripción en el sistema.
+                                </div>
+                            </div>
 
-    <form th:action="@{/inscripcion/editar}" method="post" th:object="${inscripcion}">
+                            <!-- Tabla de Checkboxes Avanzada -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+                                    <i class="bi bi-check-all text-primary fs-5"></i>
+                                    <h5 class="fw-bold text-dark mb-0 fs-6 text-uppercase"
+                                        style="letter-spacing: 0.5px;">Materias Vinculadas</h5>
+                                </div>
 
-        <input type="number" th:field="*{id}" hidden>
+                                <div class="table-responsive rounded-3 border">
+                                    <table class="table table-hover table-striped align-middle mb-0">
+                                        <thead class="table-light small text-uppercase fw-bold">
+                                            <tr>
+                                                <th class="ps-3" style="width: 10%;">ID</th>
+                                                <th class="text-center" style="width: 12%;">Selección</th>
+                                                <th style="width: 48%;">Materia</th>
+                                                <th style="width: 15%;">Año</th>
+                                                <th style="width: 15%;">Régimen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="m : ${listadoMaterias}">
+                                                <td class="ps-3 fw-semibold text-muted" th:text="${m.id}">0</td>
+                                                <td class="text-center">
+                                                    <!-- Checkbox Nativo Estilizado con Estado Th:checked -->
+                                                    <div class="form-check d-inline-block">
+                                                        <input type="checkbox" name="seleccion"
+                                                            th:id="'materia-' + ${m.id}" th:value="${m.id}"
+                                                            th:checked="${#lists.contains(inscripcion.materias.![id], m.id)}"
+                                                            class="form-check-input"
+                                                            style="cursor: pointer; width: 1.2rem; height: 1.2rem;">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <!-- Texto clickeable enlazado por ID dinámico -->
+                                                    <label th:for="'materia-' + ${m.id}" class="fw-bold text-dark m-0"
+                                                        style="cursor: pointer;" th:text="${m.nombre}">Nombre</label>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-light text-secondary border px-2.5 py-1.5 rounded-pill fw-medium"
+                                                        th:text="${m.anioCursada} + '° Año'">Año</span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-info bg-opacity-10 text-info px-2.5 py-1.5 rounded-pill text-uppercase small fw-semibold"
+                                                        th:text="${m.tipoMateria}">Tipo</span>
+                                                </td>
+                                            </tr>
+                                            <!-- Fallback por si la búsqueda rompe el listado -->
+                                            <tr th:if="${listadoMaterias.isEmpty()}">
+                                                <td colspan="5"
+                                                    class="text-center py-4 text-muted bg-light bg-opacity-20">
+                                                    <i class="bi bi-journal-x d-block mb-2 fs-4"></i>
+                                                    No se hallaron materias en el catálogo con los filtros aplicados.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-        <label for="persona">Perfil:</label>
-        <select th:field="*{perfil}">
-            <option th:each="p : ${personas}" th:value="${p.id}" th:text="${p.nombre}"></option>
-        </select>
-        <span th:if="${#fields.hasErrors('perfil')}" th:errors="*{perfil}" style="color: red;"></span>
+                            <!-- Acciones Inferiores -->
+                            <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                                <a th:href="@{/inscripcion/listado}"
+                                    class="btn btn-light rounded-pill px-4 fw-semibold text-secondary">
+                                    Cancelar Cambios
+                                </a>
+                                <button type="submit"
+                                    class="btn btn-warning text-dark rounded-pill px-5 fw-bold shadow-sm">
+                                    <i class="bi bi-save-fill me-1"></i> Guardar Modificaciones
+                                </button>
+                            </div>
 
-        <label for="anioLectivo">Año Lectivo:</label>
-        <select th:field="*{anioLectivo}">
-            <option th:each="a : ${aniosLectivo}" th:value="${a}" th:text="${a}"></option>
-        </select>
-        <span th:if="${#fields.hasErrors('anioLectivo')}" th:errors="*{anioLectivo}" style="color: red;"></span>
+                        </form>
+                    </div>
 
+                </div> <!-- /card -->
 
+            </div>
+        </div>
 
-        <h3>Selección de Materias (Se reemplazará las materias en bd por la nueva selección):</h3>
+    </main>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Selección</th>
-                    <th>Nombre</th>
-                    <th>Año de cursada</th>
-                    <th>Tipo</th>
-                </tr>
+    <!-- Footer -->
+    <footer th:replace="~{fragmentos/menu :: footer}"></footer>
 
-            </thead>
-
-            <tbody>
-                <tr th:each="m : ${listadoMaterias}">
-                    <td th:text="${m.id}">0</td>
-                    <td>
-                        <input type="checkbox" name="seleccion" id="seleccion" th:value="${m.id}"
-                            th:checked="${#lists.contains(inscripcion.materias.![id], m.id)}">
-                    </td>
-                    <td th:text="${m.nombre}">Nombre</td>
-                    <td th:text="${m.anioCursada}">Año de cursada</td>
-                    <td th:text="${m.tipoMateria}">Tipo de materia</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <input type="submit" value="Guardar">
-    </form>
-
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
