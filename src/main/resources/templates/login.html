@@ -1,53 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS e Íconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <title>Iniciar Sesión - Gestor Académico</title>
 </head>
 
-<body>
+<body class="bg-dark text-light d-flex align-items-center justify-content-center min-vh-100 py-5">
 
-    <div style="max-width: 400px; margin: 50px auto; font-family: sans-serif;">
-        <h2>Iniciar Sesión</h2>
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-10 col-md-8 col-lg-5 col-xl-4">
 
-        <!-- Mensaje si viene redirigido después de registrarse con éxito -->
-        <div th:if="${param.registrado}" style="color: green; margin-bottom: 15px;">
-            <p>¡Registro exitoso! Ya podés ingresar.</p>
-        </div>
+                <!-- TARJETA CON ESTILO OSCURO -->
+                <div
+                    class="card bg-body-tertiary border-secondary border-opacity-25 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-sm-5">
 
-        <!-- Mensaje de error si el usuario o contraseña no coinciden -->
-        <div th:if="${param.error}" style="color: red; margin-bottom: 15px;">
-            <p>Usuario o contraseña incorrectos.</p>
-        </div>
+                        <!-- ENCABEZADO CON ÍCONO OSCURO -->
+                        <div class="text-center mb-4">
+                            <div class="bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 64px; height: 64px;">
+                                <i class="bi bi-shield-lock-fill fs-2"></i>
+                            </div>
+                            <h4 class="fw-bold text-white mb-1">Iniciar Sesión</h4>
+                            <p class="text-secondary small mb-0">Ingresá tus credenciales para acceder</p>
+                        </div>
 
-        <!-- Mensaje si cerró sesión -->
-        <div th:if="${param.logout}" style="color: blue; margin-bottom: 15px;">
-            <p>Has cerrado sesión correctamente.</p>
-        </div>
+                        <!-- ALERTAS ADAPTADAS A FONDO OSCURO -->
+                        <!-- 1. Registro exitoso -->
+                        <div th:if="${param.registrado}"
+                            class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 text-success rounded-3 d-flex align-items-center p-3 mb-4"
+                            role="alert">
+                            <i class="bi bi-check-circle-fill me-2 flex-shrink-0"></i>
+                            <div class="small fw-semibold">
+                                ¡Registro exitoso! Ya podés ingresar.
+                            </div>
+                        </div>
 
-        <!-- El action de este formulario DEBE ser /login y el método POST -->
-        <form th:action="@{/login}" method="post">
-            <div style="margin-bottom: 15px;">
-                <!-- Spring Security busca estrictamente el atributo name="username" -->
-                <label>Usuario:</label><br>
-                <input type="text" name="username" required style="width: 100%; padding: 8px;" />
+                        <!-- 2. Error de login -->
+                        <div th:if="${param.error}"
+                            class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger rounded-3 d-flex align-items-center p-3 mb-4"
+                            role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+                            <div class="small fw-semibold">
+                                Usuario o contraseña incorrectos.
+                            </div>
+                        </div>
+
+                        <!-- 3. Cierre de sesión -->
+                        <div th:if="${param.logout}"
+                            class="alert alert-info bg-info bg-opacity-10 border-info border-opacity-25 text-info rounded-3 d-flex align-items-center p-3 mb-4"
+                            role="alert">
+                            <i class="bi bi-info-circle-fill me-2 flex-shrink-0"></i>
+                            <div class="small fw-semibold">
+                                Has cerrado sesión correctamente.
+                            </div>
+                        </div>
+
+                        <!-- FORMULARIO DE ACCESO -->
+                        <form th:action="@{/login}" method="post">
+
+                            <!-- Campo Usuario -->
+                            <div class="mb-3">
+                                <label for="username"
+                                    class="form-label small fw-semibold text-secondary mb-1">Usuario</label>
+                                <div class="input-group">
+                                    <span
+                                        class="input-group-text bg-dark border-secondary border-opacity-50 text-secondary ps-3">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text" id="username" name="username"
+                                        class="form-control bg-dark border-secondary border-opacity-50 text-light border-start-0 ps-2"
+                                        placeholder="Ingresá tu usuario" required autofocus />
+                                </div>
+                            </div>
+
+                            <!-- Campo Contraseña -->
+                            <div class="mb-4">
+                                <label for="password"
+                                    class="form-label small fw-semibold text-secondary mb-1">Contraseña</label>
+                                <div class="input-group">
+                                    <span
+                                        class="input-group-text bg-dark border-secondary border-opacity-50 text-secondary ps-3">
+                                        <i class="bi bi-key"></i>
+                                    </span>
+                                    <input type="password" id="password" name="password"
+                                        class="form-control bg-dark border-secondary border-opacity-50 text-light border-start-0 ps-2"
+                                        placeholder="••••••••" required />
+                                </div>
+                            </div>
+
+                            <!-- Botón Principal -->
+                            <button type="submit"
+                                class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm mb-2">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Ingresar
+                            </button>
+
+                        </form>
+
+                        <!-- PIE DE REGISTRO -->
+                        <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+                            <p class="small text-secondary mb-0">
+                                ¿No tenés cuenta?
+                                <a th:href="@{/registro}" class="text-primary fw-bold text-decoration-none ms-1">
+                                    Registrate acá
+                                </a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
+        </div>
+    </main>
 
-            <div style="margin-bottom: 15px;">
-                <!-- Spring Security busca estrictamente el atributo name="password" -->
-                <label>Contraseña:</label><br>
-                <input type="password" name="password" required style="width: 100%; padding: 8px;" />
-            </div>
-
-            <button type="submit"
-                style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer;">
-                Ingresar
-            </button>
-        </form>
-
-        <p style="margin-top: 15px;">¿No tenés cuenta? <a th:href="@{/registro}">Registrate acá</a></p>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
