@@ -1,6 +1,6 @@
 ## 📸 Demostración Visual del Sistema
 
-> **Nota para Reclutadores:** Debido a los costos de infraestructura para alojar aplicaciones Java empresariales, este proyecto se ejecuta en un entorno local. A continuación, se detalla el funcionamiento de la interfaz y la lógica de negocio a través de capturas del sistema.
+> **Acerca del Proyecto:** A continuación se expone un recorrido visual por los diferentes módulos del sistema, mostrando la interfaz gráfica, los flujos de seguridad y la gestión completa de datos.
 
 ### 🏠 Inicio y Cronograma Principal
 <p align="center">
