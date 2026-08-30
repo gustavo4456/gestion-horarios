@@ -1,4 +1,4 @@
-package com.gustavo.proyecto_persona.controller;
+package com.gustavo.proyecto_persona.controller.web;
 
 import java.security.Principal;
 import java.util.List;

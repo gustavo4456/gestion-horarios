@@ -1,4 +1,4 @@
-package com.gustavo.proyecto_persona.controller;
+package com.gustavo.proyecto_persona.controller.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.gustavo.proyecto_persona.controller;
+package com.gustavo.proyecto_persona.controller.web;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

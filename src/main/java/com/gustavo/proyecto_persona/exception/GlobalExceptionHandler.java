@@ -1,4 +1,4 @@
-package com.gustavo.proyecto_persona.controller;
+package com.gustavo.proyecto_persona.exception;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
