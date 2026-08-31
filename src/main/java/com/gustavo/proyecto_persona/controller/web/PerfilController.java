@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gustavo.proyecto_persona.dto.PerfilAEditarDto;
-import com.gustavo.proyecto_persona.dto.PerfilAGuardarDto;
+import com.gustavo.proyecto_persona.dto.web.PerfilAEditarDto;
+import com.gustavo.proyecto_persona.dto.web.PerfilAGuardarDto;
 import com.gustavo.proyecto_persona.model.Perfil;
 import com.gustavo.proyecto_persona.service.PerfilService;
 

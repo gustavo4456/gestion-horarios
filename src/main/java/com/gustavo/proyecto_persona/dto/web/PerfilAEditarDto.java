@@ -1,4 +1,4 @@
-package com.gustavo.proyecto_persona.dto;
+package com.gustavo.proyecto_persona.dto.web;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

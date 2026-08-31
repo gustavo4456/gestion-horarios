@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gustavo.proyecto_persona.dto.PerfilAEditarDto;
-import com.gustavo.proyecto_persona.dto.PerfilAGuardarDto;
+import com.gustavo.proyecto_persona.dto.web.PerfilAEditarDto;
+import com.gustavo.proyecto_persona.dto.web.PerfilAGuardarDto;
 import com.gustavo.proyecto_persona.model.Perfil;
 import com.gustavo.proyecto_persona.model.Usuario;
 import com.gustavo.proyecto_persona.repository.PerfilRepository;

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.gustavo.proyecto_persona.dto.HorarioDto;
+import com.gustavo.proyecto_persona.dto.web.HorarioDto;
 import com.gustavo.proyecto_persona.enums.DiasSemana;
 import com.gustavo.proyecto_persona.model.Inscripcion;
 import com.gustavo.proyecto_persona.model.Perfil;
