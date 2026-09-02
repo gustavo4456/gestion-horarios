@@ -21,6 +21,5 @@ public class MateriaDto {
     @Builder.Default
     private Set<HorarioDto> horariosDto = new HashSet<>();
 
-    @Builder.Default
-    private Set<InscripcionDto> inscripcionesDto = new HashSet<>();
+
 }
