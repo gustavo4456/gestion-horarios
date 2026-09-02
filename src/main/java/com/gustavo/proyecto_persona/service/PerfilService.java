@@ -3,6 +3,7 @@ package com.gustavo.proyecto_persona.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.gustavo.proyecto_persona.dto.rest.PerfilAGuardarRDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,17 @@ public class PerfilService {
     }
 
     public void guardarPersona(PerfilAGuardarDto persona, String username) {
+        Usuario usuarioLogueado = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario de la sesión actual."));
+
+        Perfil perfilAGuardar = new Perfil();
+        perfilAGuardar.setNombre(persona.getNombre());
+        perfilAGuardar.setUsuario(usuarioLogueado);
+
+        perfilRepository.save(perfilAGuardar);
+    }
+
+    public void guardarPersonaRest(PerfilAGuardarRDto persona, String username) {
         Usuario usuarioLogueado = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario de la sesión actual."));
 
