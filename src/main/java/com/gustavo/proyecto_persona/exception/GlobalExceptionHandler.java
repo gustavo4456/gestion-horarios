@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.exception;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import jakarta.persistence.EntityNotFoundException;
 
 @ControllerAdvice
+@Order(2)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)

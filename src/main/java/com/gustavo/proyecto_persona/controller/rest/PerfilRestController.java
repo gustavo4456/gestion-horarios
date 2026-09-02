@@ -6,6 +6,7 @@ import com.gustavo.proyecto_persona.model.Perfil;
 import com.gustavo.proyecto_persona.service.PerfilService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +38,14 @@ public class PerfilRestController {
 
 
         return ResponseEntity.ok(perfilesDto);
+    }
+
+    @GetMapping("/perfil/{id}")
+    public ResponseEntity<PerfilDto> getPerfilPorId(@PathVariable Long id, Principal principal) {
+
+        PerfilDto perfilDto = PerfilMapper.toDto(perfilService.getPersonaPorId(id, principal.getName()));
+
+        return ResponseEntity.ok(perfilDto);
     }
 
 }
