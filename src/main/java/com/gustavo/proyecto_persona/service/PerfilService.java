@@ -3,6 +3,7 @@ package com.gustavo.proyecto_persona.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.gustavo.proyecto_persona.dto.rest.PerfilAEditarRDto;
 import com.gustavo.proyecto_persona.dto.rest.PerfilAGuardarRDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,20 @@ public class PerfilService {
     }
 
     public void actualizarPersona(PerfilAEditarDto persona, String username) throws EntityNotFoundException {
+        Optional<Perfil> perfilEncontradaOp = perfilRepository.findByIdAndUsuarioUsername(persona.getId(), username);
+
+        if (perfilEncontradaOp.isEmpty()) {
+            throw new EntityNotFoundException(
+                    "No se pudo actualizar los datos. No se encontró el perfil o no tenés permisos.");
+        }
+
+        Perfil perfilEncontrado = perfilEncontradaOp.get();
+        perfilEncontrado.setNombre(persona.getNombre());
+
+        perfilRepository.save(perfilEncontrado);
+    }
+
+    public void actualizarPersonaRest(PerfilAEditarRDto persona, String username) throws EntityNotFoundException {
         Optional<Perfil> perfilEncontradaOp = perfilRepository.findByIdAndUsuarioUsername(persona.getId(), username);
 
         if (perfilEncontradaOp.isEmpty()) {

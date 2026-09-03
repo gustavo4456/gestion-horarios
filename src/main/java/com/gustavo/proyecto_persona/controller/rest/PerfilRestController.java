@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.controller.rest;
 
+import com.gustavo.proyecto_persona.dto.rest.PerfilAEditarRDto;
 import com.gustavo.proyecto_persona.dto.rest.PerfilAGuardarRDto;
 import com.gustavo.proyecto_persona.dto.rest.PerfilDto;
 import com.gustavo.proyecto_persona.dto.rest.PerfilMapper;
@@ -51,6 +52,22 @@ public class PerfilRestController {
         perfilService.guardarPersonaRest(perfilAGuardarDto, principal.getName());
 
         return ResponseEntity.ok("Se creo el Perfil correctamente.");
+    }
+
+    @PatchMapping("/actualizar")
+    public ResponseEntity<String> actualizarPerfil(@RequestBody @Valid PerfilAEditarRDto perfilAEditarRDto, Principal principal) {
+
+        perfilService.actualizarPersonaRest(perfilAEditarRDto, principal.getName());
+
+        return ResponseEntity.ok("Se actualizar los datos del perfil.");
+    }
+
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<String> borrarPerfil(@PathVariable Long id, Principal principal) {
+
+        perfilService.borrarPersona(id, principal.getName());
+
+        return ResponseEntity.ok("Se elimino un perfil.");
     }
 
 }
