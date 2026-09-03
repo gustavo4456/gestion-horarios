@@ -31,7 +31,7 @@ public class PerfilRestController {
 
 
         List<PerfilDto> perfilesDto = perfiles.stream()
-                .map(perfil -> PerfilMapper.toDto(perfil))
+                .map(PerfilMapper::toDto)
                 .collect(Collectors.toList());
 
 
