@@ -9,28 +9,44 @@
   <img src="https://img.shields.io/badge/Thymeleaf-Bootstrap_5-005F00?style=for-the-badge&logo=thymeleaf" alt="Thymeleaf">
   <img src="https://img.shields.io/badge/Lombok-BC2224?style=for-the-badge&logo=apachemaven" alt="Lombok">
   <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven" alt="Maven">
+  <img src="https://img.shields.io/badge/API_REST-JSON-000000?style=for-the-badge&logo=json" alt="API REST">
 </p>
 
 <p align="center">
-  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura monolítica con renderizado en el servidor y una interfaz moderna en modo oscuro.
+  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura híbrida que combina un monolito tradicional con renderizado en el servidor (SSR) y una <b>API REST</b> completa estructurada mediante DTOs para el consumo de datos de forma externa.
 </p>
 
 ---
 
 ## 🏛️ Arquitectura y Flujo de la Aplicación
 
-El sistema sigue el patrón arquitectónico **MVC (Modelo-Vista-Controlador)** utilizando Spring Boot:
+El sistema sigue el patrón arquitectónico **MVC (Modelo-Vista-Controlador)** y expone servicios **RESTful** utilizando Spring Boot, manteniendo la capa de servicios pura y trabajando exclusivamente con entidades de dominio:
 
 1. **Controladores Web (`@Controller`):** Gestionados mediante **Spring Web**, reciben las peticiones HTTP del navegador, se comunican con la capa de servicios y devuelven las plantillas HTML.
-2. **Motor de Plantillas (Thymeleaf):** Renderiza los datos dinámicos enviados por el backend directamente en el servidor, inyectando objetos, listas y validaciones en tiempo real con Bootstrap 5.
-3. **Persistencia (Spring Data JPA / Hibernate):** Gestiona la comunicación con la base de datos relacional **PostgreSQL** mediante entidades optimizadas con **Lombok** para reducir código repetitivo (Getters, Setters, Constructores).
-4. **Seguridad (Spring Security):** Intercepta todas las peticiones para validar la sesión activa del usuario, encriptando credenciales con `BCryptPasswordEncoder` y protegiendo las rutas privadas.
+2. **Controladores REST (`@RestController`):** Proveen una interfaz de comunicación mediante JSON bajo el prefijo `/api/`. Se encargan de recibir las peticiones, mapear los DTOs de entrada hacia Entidades y, tras interactuar con la capa de servicio, mapear las respuestas de vuelta a DTOs para no exponer la lógica de negocio ni la estructura de la base de datos.
+3. **Motor de Plantillas (Thymeleaf):** Renderiza los datos dinámicos enviados por el backend directamente en el servidor, inyectando objetos, listas y validaciones en tiempo real con Bootstrap 5.
+4. **Persistencia (Spring Data JPA / Hibernate):** Gestiona la comunicación con la base de datos relacional **PostgreSQL** mediante entidades optimizadas con **Lombok** para reducir código repetitivo (Getters, Setters, Constructores).
+5. **Seguridad (Spring Security):** Intercepta todas las peticiones para validar la sesión activa o el token del usuario logueado (inyectando `Principal`), encriptando credenciales con `BCryptPasswordEncoder` y protegiendo tanto las rutas web como los endpoints privados.
 
 ---
 
-## 📂 Descripción de Módulos y Vistas
+## 🔌 API REST (Endpoints Disponibles)
 
-El sistema está estructurado en 5 grandes módulos funcionales:
+El proyecto incluye un paquete dedicado `controller.rest` que agrupa los servicios de la aplicación para su consumo externo. Todos los endpoints requieren autenticación (obteniendo el contexto a través de `Principal`) y utilizan validación mediante `@Valid`.
+
+| Módulo / Controlador | Ruta Base | Operaciones Principales | Descripción |
+| :--- | :--- | :--- | :--- |
+| **Horarios** | `/api/horario` | `GET`, `POST`, `PATCH`, `DELETE` | Búsqueda general, por ID o por `anioCursada`. Permite guardar, actualizar y eliminar horarios usando `HorarioConMateriaDto`. |
+| **Inscripciones** | `/api/inscripcion` | `GET`, `POST`, `PATCH`, `DELETE` | Búsqueda mediante query params (`idPersona`, `anioLectivo`). Crea y actualiza inscripciones vinculando listas de materias (`seleccion`). |
+| **Materias** | `/api/materia` | `GET`, `POST`, `PATCH`, `DELETE` | CRUD del catálogo de asignaturas. Búsqueda avanzada combinando `nombre` y `anioCursada` devolviendo listas de `MateriaDto`. |
+| **Perfiles** | `/api/perfil` | `GET`, `POST`, `PATCH`, `DELETE` | Gestión de usuarios del sistema. Incluye mapeos diferenciados para creación (`PerfilAGuardarRDto`) y edición (`PerfilAEditarRDto`). |
+| **Registro** | `/api/usuario` | `POST` | Endpoint público bajo `/registro` para el alta de nuevos usuarios en el sistema. |
+
+---
+
+## 📂 Descripción de Módulos Web y Vistas
+
+El sistema web está estructurado en 5 grandes módulos funcionales:
 
 * **1. Autenticación y Seguridad:** Control de acceso mediante sesiones HTTP y contraseñas encriptadas. Vistas dedicadas para inicio de sesión y registro de nuevos usuarios con manejo de errores personalizados.
 * **2. Gestión de Perfiles:** Módulo CRUD completo orientado al registro, listado y administración de los usuarios del sistema, con buscador rápido por ID.
@@ -40,9 +56,9 @@ El sistema está estructurado en 5 grandes módulos funcionales:
 
 ---
 
-## 📸 Demostración Visual del Sistema
+## 📸 Demostración Visual del Sistema Web
 
-> **Acerca del Proyecto:** Recorrido visual por los diferentes módulos de la aplicación, mostrando la consistencia del diseño en modo oscuro y la interfaz de gestión.
+> **Acerca del Proyecto:** Recorrido visual por los diferentes módulos de la aplicación web, mostrando la consistencia del diseño en modo oscuro y la interfaz de gestión.
 
 ### 🏠 Inicio y Cronograma Principal
 <p align="center">
@@ -168,6 +184,7 @@ El sistema está estructurado en 5 grandes módulos funcionales:
 ## 🛠️ Stack Tecnológico
 
 * **Core & Backend:** Java, Spring Boot, Spring Web, Spring Security.
+* **Integración y API:** Patrón DTO, Mappers estáticos, validación de datos (`jakarta.validation`).
 * **Base de Datos & Persistencia:** PostgreSQL, Spring Data JPA, Hibernate, Lombok.
 * **Frontend / UI:** Thymeleaf, Bootstrap 5 (Dark Mode), Bootstrap Icons.
 * **Herramientas de Control y Construcción:** Maven, Git (integrado en VS Code).
