@@ -3,6 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=springboot" alt="Spring Boot">
   <img src="https://img.shields.io/badge/Spring_Security-6.x-6DB33F?style=for-the-badge&logo=springsecurity" alt="Spring Security">
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT">
   <img src="https://img.shields.io/badge/Spring_Web-6DB33F?style=for-the-badge&logo=spring" alt="Spring Web">
   <img src="https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=for-the-badge&logo=spring" alt="Spring Data JPA">
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
@@ -13,7 +14,7 @@
 </p>
 
 <p align="center">
-  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura híbrida que combina un monolito tradicional con renderizado en el servidor (SSR) y una <b>API REST</b> completa estructurada mediante DTOs para el consumo de datos de forma externa.
+  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura híbrida que combina un monolito tradicional con renderizado en el servidor (SSR) y una <b>API REST Stateless</b> protegida con <b>JWT (JSON Web Tokens)</b> y estructurada mediante DTOs para el consumo de datos de forma externa.
 </p>
 
 ---
@@ -26,13 +27,13 @@ El sistema sigue el patrón arquitectónico **MVC (Modelo-Vista-Controlador)** y
 2. **Controladores REST (`@RestController`):** Proveen una interfaz de comunicación mediante JSON bajo el prefijo `/api/`. Se encargan de recibir las peticiones, mapear los DTOs de entrada hacia Entidades y, tras interactuar con la capa de servicio, mapear las respuestas de vuelta a DTOs para no exponer la lógica de negocio ni la estructura de la base de datos.
 3. **Motor de Plantillas (Thymeleaf):** Renderiza los datos dinámicos enviados por el backend directamente en el servidor, inyectando objetos, listas y validaciones en tiempo real con Bootstrap 5.
 4. **Persistencia (Spring Data JPA / Hibernate):** Gestiona la comunicación con la base de datos relacional **PostgreSQL** mediante entidades optimizadas con **Lombok** para reducir código repetitivo (Getters, Setters, Constructores).
-5. **Seguridad (Spring Security):** Intercepta todas las peticiones para validar la sesión activa o el token del usuario logueado (inyectando `Principal`), encriptando credenciales con `BCryptPasswordEncoder` y protegiendo tanto las rutas web como los endpoints privados.
+5. **Seguridad Dual (Spring Security & JWT):** Intercepta todas las peticiones implementando un control de acceso basado en sesiones HTTP para las vistas web, y una arquitectura **Stateless** para la API REST. Un filtro personalizado (`JwtAuthenticationFilter`) valida los tokens Bearer para generar el contexto de autenticación de forma segura y sin guardar estado en el servidor.
 
 ---
 
 ## 🔌 API REST (Endpoints Disponibles)
 
-El proyecto incluye un paquete dedicado `controller.rest` que agrupa los servicios de la aplicación para su consumo externo. Todos los endpoints requieren autenticación (obteniendo el contexto a través de `Principal`) y utilizan validación mediante `@Valid`.
+El proyecto incluye un paquete dedicado `controller.rest` que agrupa los servicios de la aplicación para su consumo externo. Todos los endpoints privados requieren autenticación mediante el encabezado HTTP `Authorization: Bearer <token>` y utilizan validación estricta mediante `@Valid`.
 
 | Módulo / Controlador | Ruta Base | Operaciones Principales | Descripción |
 | :--- | :--- | :--- | :--- |
@@ -40,7 +41,7 @@ El proyecto incluye un paquete dedicado `controller.rest` que agrupa los servici
 | **Inscripciones** | `/api/inscripcion` | `GET`, `POST`, `PATCH`, `DELETE` | Búsqueda mediante query params (`idPersona`, `anioLectivo`). Crea y actualiza inscripciones vinculando listas de materias (`seleccion`). |
 | **Materias** | `/api/materia` | `GET`, `POST`, `PATCH`, `DELETE` | CRUD del catálogo de asignaturas. Búsqueda avanzada combinando `nombre` y `anioCursada` devolviendo listas de `MateriaDto`. |
 | **Perfiles** | `/api/perfil` | `GET`, `POST`, `PATCH`, `DELETE` | Gestión de usuarios del sistema. Incluye mapeos diferenciados para creación (`PerfilAGuardarRDto`) y edición (`PerfilAEditarRDto`). |
-| **Registro** | `/api/usuario` | `POST` | Endpoint público bajo `/registro` para el alta de nuevos usuarios en el sistema. |
+| **Registro / Auth** | `/api/usuario` | `POST` | Endpoints públicos para el alta de nuevos usuarios en el sistema y la obtención del token JWT de acceso. |
 
 ---
 
@@ -183,7 +184,8 @@ El sistema web está estructurado en 5 grandes módulos funcionales:
 
 ## 🛠️ Stack Tecnológico
 
-* **Core & Backend:** Java, Spring Boot, Spring Web, Spring Security.
+* **Core & Backend:** Java, Spring Boot, Spring Web.
+* **Seguridad & Autenticación:** Spring Security, JSON Web Tokens (JJWT), `BCryptPasswordEncoder`.
 * **Integración y API:** Patrón DTO, Mappers estáticos, validación de datos (`jakarta.validation`).
 * **Base de Datos & Persistencia:** PostgreSQL, Spring Data JPA, Hibernate, Lombok.
 * **Frontend / UI:** Thymeleaf, Bootstrap 5 (Dark Mode), Bootstrap Icons.
