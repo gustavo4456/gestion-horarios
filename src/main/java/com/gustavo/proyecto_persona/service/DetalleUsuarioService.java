@@ -1,5 +1,6 @@
 package com.gustavo.proyecto_persona.service;
 
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,8 +20,8 @@ public class DetalleUsuarioService implements UserDetailsService {
     }
 
     @Override
+    @NullMarked
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
