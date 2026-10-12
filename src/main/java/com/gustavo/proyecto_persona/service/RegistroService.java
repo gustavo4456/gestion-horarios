@@ -21,6 +21,10 @@ public class RegistroService {
 
     public void guardarUsuario(Usuario usuario) throws EntityNotFoundException {
 
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no puede ser null.");
+        }
+
         if (usuarioRepository.findByUsername(usuario.getUsername()).isPresent()) {
 
             throw new EntityNotFoundException("El nombre de usuario ya está registrado.");
