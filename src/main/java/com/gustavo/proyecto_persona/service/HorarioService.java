@@ -24,24 +24,68 @@ public class HorarioService {
     }
 
     public List<Horario> getHorarios(String username) {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser null.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
         return horarioRepository.findAllByMateriaUsuarioUsernameOrderByMateriaNombreAscHoraInicioAsc(username);
     }
 
-    public List<Horario> getHorariosPorAnioCursada(Long id, String username) throws EntityNotFoundException {
-        if (id == null || id <= 0) {
+    public List<Horario> getHorariosPorAnioCursada(Long anioCursada, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser null.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (anioCursada == null || anioCursada <= 0) {
             throw new EntityNotFoundException("El año de cursada debe ser mayor a cero y no ser nulo.");
         }
 
-        return horarioRepository.findHorariosPorAnioCursadaYUsuario(id, username);
+        return horarioRepository.findHorariosPorAnioCursadaYUsuario(anioCursada, username);
     }
 
     public Horario getHorarioPorId(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser null.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser 0 o negativo.");
+        }
+
         return horarioRepository.findByIdAndMateriaUsuarioUsername(id, username)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "No se encontró el horario o no tienes permisos para acceder."));
     }
 
     public void borrarHorario(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo o cero.");
+        }
+
         boolean existeHorario = horarioRepository.existsByIdAndMateriaUsuarioUsername(id, username);
 
         if (!existeHorario) {
@@ -52,6 +96,15 @@ public class HorarioService {
     }
 
     public void guardarHorario(Horario horarioNuevo, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (horarioNuevo == null) {
+            throw new IllegalArgumentException("El horario no debe ser nulo.");
+        }
+
         if (horarioNuevo.getId() != null) {
             throw new EntityNotFoundException("El id del horario debe ser null.");
         }
@@ -67,6 +120,19 @@ public class HorarioService {
     }
 
     public void actualizarHorario(Horario horario, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (horario == null) {
+            throw new IllegalArgumentException("El horario no debe ser nulo.");
+        }
+
         if (horario.getId() == null) {
             throw new EntityNotFoundException("Para actualizar un horario, su id no puede ser null.");
         }
