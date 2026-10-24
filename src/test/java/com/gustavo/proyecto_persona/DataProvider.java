@@ -128,4 +128,86 @@ public class DataProvider {
                 LocalTime.of(12, 0), DiasSemana.LUNES,
                 TipoMateria.TEORIA, quimica);
     }
+
+    public static List<Materia> getMateriasMock() {
+
+
+        return List.of(
+                new Materia(1L, "Química", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(2L, "Matemática Discreta", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(3L, "Informatica I", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(4L, "Física I", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null)
+        );
+    }
+
+    public static List<Materia> getMateriasPorNombreMock() {
+
+
+        return List.of(
+                new Materia(1L, "Química I", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(2L, "Química II", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(3L, "Química III", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(4L, "Química VI", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null)
+        );
+    }
+
+    public static List<Materia> getMateriasPorNombreYanioMateriaMock() {
+
+
+        return List.of(
+                new Materia(1L, "Química I", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(2L, "Química II", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(3L, "Química III", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(4L, "Química VI", 1, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null)
+        );
+    }
+
+    public static List<Materia> getMateriasPorAnioCursadaMock() {
+
+
+        return List.of(
+                new Materia(1L, "Física I", 2, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(2L, "Física II", 2, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(3L, "Sistemas II", 2, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null),
+
+                new Materia(4L, "Analisis II", 2, TipoMateria.CUATRIMESTRAL,
+                        getUsuarioMock(), null, null)
+        );
+    }
+
+    public static Materia getMateriaMock() {
+        return new Materia(1L, "Química", 1, TipoMateria.CUATRIMESTRAL,
+                getUsuarioMock(), null, null);
+    }
+
+    public static Materia getMateriaSinIdMock() {
+        return new Materia(null, "Química", 1, TipoMateria.CUATRIMESTRAL,
+                getUsuarioMock(), null, null);
+    }
 }

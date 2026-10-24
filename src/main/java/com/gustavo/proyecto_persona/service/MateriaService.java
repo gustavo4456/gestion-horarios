@@ -25,16 +25,60 @@ public class MateriaService {
     }
 
     public List<Materia> getMaterias(String username) {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
         return materiaRepository.findByUsuarioUsername(username);
     }
 
     public Materia getMateriaPorId(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser null.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo o cero.");
+        }
+
         return materiaRepository.findByIdAndUsuarioUsername(id, username)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "No se encontró la materia o no tienes permisos para verla."));
     }
 
     public void borrarMateria(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser null.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo o cero.");
+        }
+
+
         boolean existeMateria = materiaRepository.existsByIdAndUsuarioUsername(id, username);
 
         if (!existeMateria) {
@@ -45,6 +89,19 @@ public class MateriaService {
     }
 
     public void guardarMateria(Materia materia, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (materia == null) {
+            throw new IllegalArgumentException("La Materia no puede ser null.");
+        }
+
         if (materia.getId() != null) {
             throw new EntityNotFoundException("Para poder crear una materia el id debe ser null.");
         }
@@ -60,6 +117,19 @@ public class MateriaService {
     }
 
     public void actualizarMateria(Materia materia, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (materia == null) {
+            throw new IllegalArgumentException("La Materia no puede ser null.");
+        }
+
         if (materia.getId() == null) {
             throw new EntityNotFoundException("El id de la materia no puede ser null para actualizar sus datos.");
         }
@@ -78,10 +148,40 @@ public class MateriaService {
     }
 
     public List<Materia> buscarPorNombre(String nombre, String username) {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (nombre == null) {
+            throw new IllegalArgumentException("El nombre de la materia no puede ser nulo.");
+        }
+
+        if (nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la materia no puede estar vacío o con espacios en blanco.");
+        }
+
         return materiaRepository.findByNombreContainingIgnoreCaseAndUsuarioUsername(nombre, username);
     }
 
     public List<Materia> buscarPorAnioCursada(Integer anioCursada, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (anioCursada == null) {
+            throw new EntityNotFoundException("El año lectivo no debe ser null.");
+        }
+
         if (anioCursada <= 0) {
             throw new EntityNotFoundException("El año lectivo debe ser mayor a 0.");
         }
@@ -89,6 +189,27 @@ public class MateriaService {
     }
 
     public List<Materia> buscarPorNombreYAanioCursada(String nombre, Integer anioCursada, String username) {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio o con espacios en blanco.");
+        }
+
+        if (nombre == null) {
+            throw new IllegalArgumentException("El nombre de la materia no puede ser nulo.");
+        }
+
+        if (nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la materia no puede estar vacío o con espacios en blanco.");
+        }
+
+        if (anioCursada == null) {
+            throw new EntityNotFoundException("El año lectivo no debe ser null.");
+        }
+
         if (anioCursada <= 0) {
             throw new EntityNotFoundException("El año lectivo debe ser mayor a 0.");
         }
