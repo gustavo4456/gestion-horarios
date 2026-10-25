@@ -2,14 +2,12 @@ package com.gustavo.proyecto_persona;
 
 import com.gustavo.proyecto_persona.enums.DiasSemana;
 import com.gustavo.proyecto_persona.enums.TipoMateria;
-import com.gustavo.proyecto_persona.model.Horario;
-import com.gustavo.proyecto_persona.model.Materia;
-import com.gustavo.proyecto_persona.model.Perfil;
-import com.gustavo.proyecto_persona.model.Usuario;
+import com.gustavo.proyecto_persona.model.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DataProvider {
 
@@ -209,5 +207,18 @@ public class DataProvider {
     public static Materia getMateriaSinIdMock() {
         return new Materia(null, "Química", 1, TipoMateria.CUATRIMESTRAL,
                 getUsuarioMock(), null, null);
+    }
+
+    public static List<Inscripcion> getInscripcionesMock() {
+
+        return List.of(
+                new Inscripcion(1L, 2026, getPerfilMock(), null),
+                new Inscripcion(2L, 2025, getPerfilMock(), null),
+                new Inscripcion(3L, 2024, getPerfilMock(), null)
+        );
+    }
+
+    public static Inscripcion getInscripcionMock() {
+        return new Inscripcion(1L, 2026, getPerfilMock(), null);
     }
 }

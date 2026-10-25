@@ -21,23 +21,66 @@ public class InscripcionService {
     private final PerfilRepository perfilRepository;
 
     public InscripcionService(InscripcionRepository inscripcionRepository, MateriaService materiaService,
-            PerfilRepository perfilRepository) {
+                              PerfilRepository perfilRepository) {
         this.inscripcionRepository = inscripcionRepository;
         this.materiaService = materiaService;
         this.perfilRepository = perfilRepository;
     }
 
     public List<Inscripcion> getInscripciones(String username) {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
         return inscripcionRepository.findAllByPerfilUsuarioUsername(username);
     }
 
     public Inscripcion getInscripcionPorId(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser Negativo o cero.");
+        }
+
         return inscripcionRepository.findByIdAndPerfilUsuarioUsername(id, username)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "No se encontró la inscripción o no tienes permisos para verla."));
     }
 
     public void borrarInscripcion(Long id, String username) throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id no puede ser nulo.");
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("El id no puede ser Negativo o cero.");
+        }
+
         boolean existeInscripcion = inscripcionRepository.existsByIdAndPerfilUsuarioUsername(id, username);
 
         if (!existeInscripcion) {
@@ -145,7 +188,7 @@ public class InscripcionService {
     }
 
     public List<Inscripcion> getInscripcionesPorPersonaYAnioLectivo(Long idPersona, Integer anioLectivo,
-            String username)
+                                                                    String username)
             throws EntityNotFoundException {
         if (anioLectivo <= 0 || idPersona <= 0) {
             throw new EntityNotFoundException("Debe ingresar un año lectivo positivo y seleccionar una persona.");
