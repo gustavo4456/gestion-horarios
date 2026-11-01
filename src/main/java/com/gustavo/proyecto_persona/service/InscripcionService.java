@@ -93,6 +93,18 @@ public class InscripcionService {
     public void guardarInscripcion(Inscripcion inscripcion, List<Long> seleccion, String username)
             throws EntityNotFoundException {
 
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (inscripcion == null) {
+            throw new IllegalArgumentException("La inscripcion no puede ser null.");
+        }
+
         if (inscripcion.getId() != null) {
             throw new EntityNotFoundException("Para guardar una inscripción el id debe ser null.");
         }
@@ -134,6 +146,18 @@ public class InscripcionService {
     public void actualizarInscripcion(Inscripcion inscripcion, List<Long> nuevasMateriasIds, String username)
             throws EntityNotFoundException {
 
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
+        if (inscripcion == null) {
+            throw new IllegalArgumentException("La inscripcion no puede ser null.");
+        }
+
         if (inscripcion.getId() == null) {
             throw new EntityNotFoundException("Para actualizar datos de una inscripción el id no debe ser nulo.");
         }
@@ -173,6 +197,15 @@ public class InscripcionService {
 
     public List<Inscripcion> getInscripcionesPorPersona(Long idPersona, String username)
             throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
         if (idPersona <= 0) {
             throw new EntityNotFoundException("Debe seleccionar una persona.");
         }
@@ -181,6 +214,15 @@ public class InscripcionService {
 
     public List<Inscripcion> getInscripcionesPorAnioLectivo(Integer anioLectivo, String username)
             throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
         if (anioLectivo <= 0) {
             throw new EntityNotFoundException("Debe ingresar un año lectivo positivo.");
         }
@@ -190,6 +232,15 @@ public class InscripcionService {
     public List<Inscripcion> getInscripcionesPorPersonaYAnioLectivo(Long idPersona, Integer anioLectivo,
                                                                     String username)
             throws EntityNotFoundException {
+
+        if (username == null) {
+            throw new IllegalArgumentException("El username no puede ser nulo.");
+        }
+
+        if (username.isBlank()) {
+            throw new IllegalArgumentException("El username no puede estar vacio.");
+        }
+
         if (anioLectivo <= 0 || idPersona <= 0) {
             throw new EntityNotFoundException("Debe ingresar un año lectivo positivo y seleccionar una persona.");
         }

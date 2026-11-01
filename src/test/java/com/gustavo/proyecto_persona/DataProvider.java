@@ -132,16 +132,16 @@ public class DataProvider {
 
         return List.of(
                 new Materia(1L, "Química", 1, TipoMateria.CUATRIMESTRAL,
-                        getUsuarioMock(), null, null),
+                        getUsuarioMock(), null, new HashSet<>()),
 
                 new Materia(2L, "Matemática Discreta", 1, TipoMateria.CUATRIMESTRAL,
-                        getUsuarioMock(), null, null),
+                        getUsuarioMock(), null, new HashSet<>()),
 
                 new Materia(3L, "Informatica I", 1, TipoMateria.CUATRIMESTRAL,
-                        getUsuarioMock(), null, null),
+                        getUsuarioMock(), null, new HashSet<>()),
 
                 new Materia(4L, "Física I", 1, TipoMateria.CUATRIMESTRAL,
-                        getUsuarioMock(), null, null)
+                        getUsuarioMock(), null, new HashSet<>())
         );
     }
 
@@ -201,7 +201,7 @@ public class DataProvider {
 
     public static Materia getMateriaMock() {
         return new Materia(1L, "Química", 1, TipoMateria.CUATRIMESTRAL,
-                getUsuarioMock(), null, null);
+                getUsuarioMock(), null, new HashSet<>(getInscripcionesMock()));
     }
 
     public static Materia getMateriaSinIdMock() {
@@ -212,13 +212,66 @@ public class DataProvider {
     public static List<Inscripcion> getInscripcionesMock() {
 
         return List.of(
-                new Inscripcion(1L, 2026, getPerfilMock(), null),
-                new Inscripcion(2L, 2025, getPerfilMock(), null),
-                new Inscripcion(3L, 2024, getPerfilMock(), null)
+                new Inscripcion(1L, 2026, getPerfilMock(), new HashSet<>(getMateriasMock())),
+                new Inscripcion(2L, 2025, getPerfilMock(), new HashSet<>(getMateriasMock())),
+                new Inscripcion(3L, 2024, getPerfilMock(), new HashSet<>(getMateriasMock()))
+        );
+    }
+
+    public static List<Inscripcion> getInscripcionesPorAnioLectivoMock() {
+
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setUsername("Gus123");
+        usuario1.setPassword("123456789");
+        usuario1.setRol("ADMIN");
+        usuario1.setMaterias(null);
+        usuario1.setPerfiles(null);
+
+        Perfil perfil1 = new Perfil(1L, "gustavo f", usuario1, null);
+        Perfil perfil2 = new Perfil(2L, "uni", usuario1, null);
+        Perfil perfil3 = new Perfil(3L, "freelance", usuario1, null);
+
+        return List.of(
+                new Inscripcion(1L, 2026, perfil1, new HashSet<>(getMateriasMock())),
+                new Inscripcion(2L, 2026, perfil2, new HashSet<>(getMateriasMock())),
+                new Inscripcion(3L, 2026, perfil3, new HashSet<>(getMateriasMock()))
+        );
+    }
+
+    public static List<Inscripcion> getInscripcionesPorAnioLectivoYPorIdPerfilMock() {
+
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setUsername("Gus123");
+        usuario1.setPassword("123456789");
+        usuario1.setRol("ADMIN");
+        usuario1.setMaterias(null);
+        usuario1.setPerfiles(null);
+
+        Perfil perfil1 = new Perfil(1L, "gustavo f", usuario1, null);
+
+        return List.of(
+                new Inscripcion(1L, 2026, perfil1, new HashSet<>(getMateriasMock())),
+                new Inscripcion(2L, 2026, perfil1, new HashSet<>(getMateriasMock())),
+                new Inscripcion(3L, 2026, perfil1, new HashSet<>(getMateriasMock()))
+        );
+    }
+
+    public static List<Inscripcion> getInscripcionesPorIdPerfilMock() {
+
+        return List.of(
+                new Inscripcion(1L, 2026, getPerfilMock(), new HashSet<>(getMateriasMock())),
+                new Inscripcion(2L, 2025, getPerfilMock(), new HashSet<>(getMateriasMock())),
+                new Inscripcion(3L, 2024, getPerfilMock(), new HashSet<>(getMateriasMock()))
         );
     }
 
     public static Inscripcion getInscripcionMock() {
-        return new Inscripcion(1L, 2026, getPerfilMock(), null);
+        return new Inscripcion(1L, 2026, getPerfilMock(), new HashSet<>(getMateriasMock()));
+    }
+
+    public static Inscripcion getInscripcionSinIdMock() {
+        return new Inscripcion(null, 2026, getPerfilMock(), new HashSet<>(getMateriasMock()));
     }
 }
