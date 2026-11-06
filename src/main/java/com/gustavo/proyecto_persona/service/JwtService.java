@@ -2,6 +2,7 @@ package com.gustavo.proyecto_persona.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +20,30 @@ public class JwtService {
 
     // 1. Obtener el usuario (subject) desde el token
     public String extractUsername(String token) {
+
+        if (token == null) {
+            throw new IllegalArgumentException("El token no puede ser null.");
+        }
+
+        if (token.isBlank()){
+            throw new IllegalArgumentException("El token no puede estar vacio.");
+
+        }
+
+        if (!token.contains(".") || token.chars().filter(ch -> ch == '.').count() != 2) {
+            throw new MalformedJwtException("El token JWT no tiene un formato válido.");
+        }
+
         return extractClaim(token, Claims::getSubject);
     }
 
     // 2. Generar el Token (Pase VIP)
     public String generateToken(UserDetails userDetails) {
+
+        if (userDetails == null){
+            throw new IllegalArgumentException("UserDetails no puede ser nulo.");
+        }
+
         return Jwts.builder()
                 .claims(new HashMap<>())
                 .subject(userDetails.getUsername())
@@ -35,12 +55,18 @@ public class JwtService {
 
     // 3. Validar si el token es de quien dice ser y no está vencido
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
+        if (userDetails == null) {
+            throw new IllegalArgumentException("UserDetails no puede ser nulo.");
+        }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        try {
+            final String username = extractUsername(token);
+            // Si llegó hasta aquí, el token NO está expirado (jjwt ya lo validó).
+            // Solo falta comprobar que el usuario coincida.
+            return username.equals(userDetails.getUsername());
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            return false;
+        }
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
