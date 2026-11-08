@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura híbrida que combina un monolito tradicional con renderizado en el servidor (SSR) y una <b>API REST Stateless</b> protegida con <b>JWT (JSON Web Tokens)</b> y estructurada mediante DTOs para el consumo de datos de forma externa.
+  Sistema web integral desarrollado en Java para la gestión académica de perfiles, materias, horarios e inscripciones. Implementa una arquitectura híbrida que combina un monolito tradicional con renderizado en el servidor (SSR) —incluyendo exportación dinámica de cronogramas a imagen (PNG) desde el cliente— y una API REST Stateless protegida con JWT (JSON Web Tokens) estructurada mediante DTOs para el consumo de datos de forma externa.
 </p>
 
 ---
@@ -69,6 +69,7 @@ El sistema web está estructurado en 5 grandes módulos funcionales:
   <img src="assets/vista-horario.png" alt="Vista Principal de Horarios" width="850">
 </p>
 
+> **✨ Feature Destacado:** Los cronogramas renderizados pueden ser exportados directamente como imagen (PNG) mediante el botón "Descargar". El proceso se realiza íntegramente del lado del cliente (navegador) utilizando la librería `html2canvas`. Esto evita sobrecargar el servidor backend con generación de archivos pesados en Java, garantizando una descarga rápida y manteniendo intactos los colores dinámicos de las materias.
 ### ⚙️ Módulos del Sistema (Desplegables)
 
 <details>
