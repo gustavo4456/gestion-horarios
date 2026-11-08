@@ -166,7 +166,7 @@
     <!-- ⚡ SCRIPT DE ASIGNACIÓN DINÁMICA DE COLORES POR MATERIA -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Paleta de colores sutiles y estéticos (Fondo, Borde Izquierdo, Texto principal, Fondo Badge)
+            // Paleta de colores sutiles y estéticos
             const paletas = [
                 { bg: '#e0f2fe', border: '#0284c7', text: '#0369a1', badgeBg: '#bae6fd' }, // Azul / Cyan
                 { bg: '#dcfce7', border: '#16a34a', text: '#15803d', badgeBg: '#bbf7d0' }, // Verde Esmeralda
@@ -178,36 +178,34 @@
                 { bg: '#f1f5f9', border: '#475569', text: '#334155', badgeBg: '#cbd5e1' }  // Pizarra / Gris
             ];
 
-            // Función de Hash para convertir cualquier texto en un índice numérico único y consistente
-            function stringToHashIndex(str, max) {
-                let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-                }
-                return Math.abs(hash) % max;
-            }
+            // Objeto para guardar qué color se le asignó a cada materia
+            const coloresAsignados = {};
+            let indiceColorActual = 0;
 
-            // Seleccionamos todas las tarjetas de materia incrustadas en el DOM
             const tarjetas = document.querySelectorAll('.tarjeta-materia');
 
             tarjetas.forEach(tarjeta => {
                 const nombreMateria = tarjeta.getAttribute('data-materia');
                 if (!nombreMateria) return;
 
-                // Obtenemos el índice correspondiente según el nombre
-                const selectorIndex = stringToHashIndex(nombreMateria, paletas.length);
+                // Si la materia es nueva, le asignamos el siguiente color disponible en la paleta
+                if (coloresAsignados[nombreMateria] === undefined) {
+                    coloresAsignados[nombreMateria] = indiceColorActual % paletas.length;
+                    indiceColorActual++;
+                }
+
+                // Recuperamos el índice de color para esta materia
+                const selectorIndex = coloresAsignados[nombreMateria];
                 const colorData = paletas[selectorIndex];
 
-                // Aplicamos estilos en tiempo de renderizado al contenedor
+                // Aplicamos estilos
                 tarjeta.style.backgroundColor = colorData.bg;
                 tarjeta.style.borderColor = colorData.border;
 
-                // Cambiamos colores del texto interno y elementos secundarios
                 tarjeta.querySelectorAll('.materia-titulo, .materia-horario').forEach(el => {
                     el.style.setProperty('color', colorData.text, 'important');
                 });
 
-                // Cambiamos el estilo visual de la etiqueta (Badge)
                 const badge = tarjeta.querySelector('.materia-badge');
                 if (badge) {
                     badge.style.backgroundColor = colorData.badgeBg;
