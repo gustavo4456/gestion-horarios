@@ -68,14 +68,23 @@
 
             <div th:each="entry : ${horariosPorAnio}">
 
-                <div class="d-flex align-items-center gap-2 mb-3 mt-4 justify-content-center justify-content-md-start">
-                    <span class="badge bg-dark rounded-pill px-3 py-2 fs-6 shadow-sm"
-                        th:text="${entry.key} + '° Año' + (${anioLectivo != null} ? ' — Ciclo ' + ${anioLectivo} : '')">
-                        1° Año
-                    </span>
+                <div class="d-flex align-items-center mb-3 mt-4 justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-dark rounded-pill px-3 py-2 fs-6 shadow-sm"
+                            th:text="${entry.key} + '° Año' + (${anioLectivo != null} ? ' — Ciclo ' + ${anioLectivo} : '')">
+                            1° Año
+                        </span>
+                    </div>
+
+                    <!-- Botón de descarga pasando el año como parámetro -->
+                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill fw-bold shadow-sm"
+                            th:onclick="'descargarComoImagen(' + ${entry.key} + ')'">
+                            <i class="bi bi-download me-1"></i> Descargar
+                    </button>
                 </div>
 
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+                <!-- Agregamos el ID dinámico y un bg-white para evitar fondos transparentes en la imagen -->
+                <div th:id="'tarjeta-horario-' + ${entry.key}" class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5 bg-white">
                     <div class="card-body p-0">
                         <div class="table-responsive">
 
@@ -208,6 +217,31 @@
             });
         });
     </script>
+
+    <script>
+        function descargarComoImagen(anio) {
+            // Seleccionamos específicamente la tarjeta del año que se clickeó
+            const elemento = document.getElementById('tarjeta-horario-' + anio);
+
+            if (!elemento) return;
+
+            // html2canvas lee el HTML y lo convierte en un canvas
+            html2canvas(elemento, {
+                scale: 2, // Aumenta la resolución al doble (ideal para que el texto se lea nítido al hacer zoom)
+                backgroundColor: '#ffffff', // Fuerza el fondo blanco
+                useCORS: true // Permite renderizar estilos de Bootstrap correctamente
+            }).then(canvas => {
+                // Creamos un enlace <a> virtual para forzar la descarga
+                const link = document.createElement('a');
+                link.download = `Horario_${anio}_Anio.png`; // Nombre dinámico del archivo
+                link.href = canvas.toDataURL('image/png'); // Convertimos el canvas a formato PNG
+                link.click(); // Simulamos el click
+            });
+        }
+    </script>
+
+    <!-- Librería para capturar el DOM como imagen -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 
 </html> 
