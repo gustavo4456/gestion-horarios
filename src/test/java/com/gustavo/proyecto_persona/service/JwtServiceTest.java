@@ -146,7 +146,7 @@ public class JwtServiceTest {
 
         @Test
         public void testIsTokenValid(){
-            String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJHdXMxMjMiLCJpYXQiOjE3OTM5NzE0OTQsImV4cCI6MTc5NDAwNzQ5NH0.4vlzRd-gVqCPvDfm6T-w3lLknSMj1OnVrDLJ-FSpNb6cMjydBN-1RJzaAO6BXDQB";
+            String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJHdXMxMjMiLCJpYXQiOjE3OTM5NzE0OTQsImV4cCI6NDEwMjQ0NDgwMH0.QqWPsBXbIemxKAAknhBaVzaWrHHtt9kXvnWv0fgoQSCudqEmMF1GLPw1shdO-nqJ";
             UserDetails userDetails = User.withUsername("Gus123")
                     .roles("ADMIN")
                     .password("123456789")
